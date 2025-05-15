@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { Paperclip, Sparkles } from "lucide-react";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const Hero1 = () => {
   return (
@@ -26,7 +27,8 @@ const Hero1 = () => {
       {/* Header */}
       <header className="flex justify-between items-center p-6">
         <div className="flex items-center gap-2">
-          <img src="http://hextaui.com/logo.svg" width={30} height={30} />
+          <SidebarTrigger className="mr-2" />
+          <img src="http://hextaui.com/logo.svg" width={30} height={30} alt="Logo" />
           <div className="font-bold text-md">HextaAI</div>
         </div>
         <button className="bg-white text-black hover:bg-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer font-semibold">
