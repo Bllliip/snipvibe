@@ -15,10 +15,9 @@ import {
 
 export function AppSidebar() {
   return (
-    <Sidebar className="bg-[#121212]">
+    <Sidebar className="bg-[#0c0414]">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
-          <img src="/lovable-uploads/19121974-93f0-40e5-996f-76720d6bbf5b.png" width={24} height={24} alt="ClipVibe Logo" />
           <span className="font-bold text-sm text-white">ClipVibe</span>
         </div>
       </SidebarHeader>
@@ -27,7 +26,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Create New Project" className="text-white hover:bg-[#1e1e1e]">
+                <SidebarMenuButton tooltip="Create New Project" className="text-white hover:bg-[#1c1528]">
                   <Plus className="text-white" />
                   <span>Create New Project</span>
                 </SidebarMenuButton>
@@ -39,13 +38,13 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Upgrade" className="text-white hover:bg-[#1e1e1e]">
+            <SidebarMenuButton tooltip="Upgrade" className="text-white hover:bg-[#1c1528]">
               <Star className="text-white" />
               <span>Upgrade</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Account" className="text-white hover:bg-[#1e1e1e]">
+            <SidebarMenuButton tooltip="Account" className="text-white hover:bg-[#1c1528]">
               <User className="text-white" />
               <span>Account</span>
             </SidebarMenuButton>

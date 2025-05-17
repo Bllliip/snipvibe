@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -27,7 +28,6 @@ const Hero1 = () => {
       <header className="flex justify-between items-center p-6">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="mr-2" />
-          <img src="/lovable-uploads/19121974-93f0-40e5-996f-76720d6bbf5b.png" width={30} height={30} alt="ClipVibe Logo" />
           <div className="font-bold text-md">ClipVibe</div>
         </div>
         <button className="bg-white text-black hover:bg-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer font-semibold">
