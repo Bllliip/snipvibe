@@ -1,8 +1,7 @@
-
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles } from "lucide-react";
+import { Paperclip, Sparkles, Zap } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const Hero1 = () => {
@@ -28,6 +27,7 @@ const Hero1 = () => {
       <header className="flex justify-between items-center p-6">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="mr-2" />
+          <Zap className="h-5 w-5 text-white" />
           <div className="font-bold text-md">ClipVibe</div>
         </div>
         <button className="bg-white text-black hover:bg-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer font-semibold">

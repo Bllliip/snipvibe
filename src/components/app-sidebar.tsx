@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { Plus, Star, User } from "lucide-react";
+import { Plus, Star, User, Zap } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +18,7 @@ export function AppSidebar() {
     <Sidebar className="bg-[#0c0414]">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
+          <Zap className="h-5 w-5 text-white" />
           <span className="font-bold text-sm text-white">ClipVibe</span>
         </div>
       </SidebarHeader>
