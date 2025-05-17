@@ -1,10 +1,18 @@
+
 "use client";
 
 import * as React from "react";
 import { Paperclip, Sparkles, Zap } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useNavigate } from "react-router-dom";
 
 const Hero1 = () => {
+  const navigate = useNavigate();
+  
+  const handleGetStarted = () => {
+    navigate('/sign-in');
+  };
+
   return (
     <div className="min-h-screen bg-[#0c0414] text-white flex flex-col relative overflow-x-hidden">
       {/* Gradient */}
@@ -30,7 +38,10 @@ const Hero1 = () => {
           <Zap className="h-5 w-5 text-white" />
           <div className="font-bold text-md">ClipVibe</div>
         </div>
-        <button className="bg-white text-black hover:bg-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer font-semibold">
+        <button 
+          onClick={handleGetStarted} 
+          className="bg-white text-black hover:bg-gray-200 rounded-full px-4 py-2 text-sm cursor-pointer font-semibold"
+        >
           Get Started
         </button>
       </header>
