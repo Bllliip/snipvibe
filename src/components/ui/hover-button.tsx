@@ -105,8 +105,12 @@ const HoverButton = React.forwardRef<HTMLButtonElement, HoverButtonProps>(
         onPointerLeave={handlePointerLeave}
         {...props}
         style={{
-          "--circle-start": "var(--tw-gradient-from, #a0d9f8)",
-          "--circle-end": "var(--tw-gradient-to, #3a5bbf)",
+          // Fix for TypeScript error by using proper type for custom properties
+          ...{
+            '--circle-start': 'var(--tw-gradient-from, #a0d9f8)',
+            '--circle-end': 'var(--tw-gradient-to, #3a5bbf)',
+          } as React.CSSProperties,
+          ...props.style
         }}
       >
         {circles.map(({ id, x, y, color, fadeState }) => (

@@ -1,11 +1,9 @@
 
-// This is a demo of a preview
-// That's what users will see in the preview
-
 import { Hero1 } from "@/components/ui/hero-1";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { HoverButton } from "@/components/ui/hover-button";
+import { ProfileInfo } from "@/components/ui/profile-info";
 
 const DemoOne = () => {
   return (
@@ -28,7 +26,21 @@ const HoverButtonDemo = () => {
   );
 };
 
+const ProfileDemo = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-[#0c0414] p-4">
+      <ProfileInfo 
+        username="John Doe"
+        email="john@example.com"
+        plan="free"
+        credits={45}
+        maxCredits={100}
+      />
+    </div>
+  );
+};
+
 // IMPORTANT:
 // format of the export MUST be export default { DemoOneOrOtherName }
 // if you don't do this, the demo will not be shown
-export default { DemoOne, HoverButtonDemo };
+export default { DemoOne, HoverButtonDemo, ProfileDemo };
