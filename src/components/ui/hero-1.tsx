@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -6,16 +5,12 @@ import { Paperclip, Sparkles, Zap } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
-
 const Hero1 = () => {
   const navigate = useNavigate();
-  
   const handleGetStarted = () => {
     navigate('/sign-in');
   };
-
-  return (
-    <div className="min-h-screen bg-[#0c0414] text-white flex flex-col relative overflow-x-hidden">
+  return <div className="min-h-screen bg-[#0c0414] text-white flex flex-col relative overflow-x-hidden">
       {/* Gradient */}
       <div className="flex gap-[10rem] rotate-[-20deg] absolute top-[-40rem] right-[-30rem] z-[0] blur-[4rem] skew-[-40deg]  opacity-50">
         <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
@@ -39,10 +34,7 @@ const Hero1 = () => {
           <Zap className="h-5 w-5 text-white" />
           <div className="font-bold text-md">ClipVibe</div>
         </div>
-        <HoverButton 
-          onClick={handleGetStarted} 
-          className="text-white"
-        >
+        <HoverButton onClick={handleGetStarted} className="text-white">
           Get Started
         </HoverButton>
       </header>
@@ -59,9 +51,7 @@ const Hero1 = () => {
             </div>
           </div>
           {/* Headline */}
-          <h1 className="text-5xl font-bold leading-tight">
-            Build Stunning websites effortslessly
-          </h1>
+          <h1 className="font-bold leading-tight text-4xl text-violet-200">make money off clips effortlessly</h1>
 
           {/* Subtitle */}
           <p className="text-md">
@@ -77,11 +67,7 @@ const Hero1 = () => {
               <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
                 <Sparkles className="w-5 h-5 text-purple-400" />
               </button>
-              <input
-                type="text"
-                placeholder="How HextaAI can help you today?"
-                className="bg-transparent flex-1 outline-none text-gray-300 pl-4"
-              />
+              <input type="text" placeholder="How HextaAI can help you today?" className="bg-transparent flex-1 outline-none text-gray-300 pl-4" />
             </div>
           </div>
 
@@ -105,8 +91,6 @@ const Hero1 = () => {
           </div>
         </div>
       </main>
-    </div>
-  );
+    </div>;
 };
-
 export { Hero1 };
