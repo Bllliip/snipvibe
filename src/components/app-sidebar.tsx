@@ -8,6 +8,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -16,9 +17,18 @@ import {
 
 export function AppSidebar() {
   const navigate = useNavigate();
+  const [projects, setProjects] = React.useState<{id: string, name: string}[]>([]);
 
   const handleUpgradeClick = () => {
     navigate('/pricing');
+  };
+
+  const handleCreateProject = () => {
+    const newProject = {
+      id: `project-${Date.now()}`,
+      name: `Project ${projects.length + 1}`
+    };
+    setProjects(prev => [newProject, ...prev]);
   };
 
   return (
@@ -34,11 +44,31 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Create New Project" className="text-white hover:bg-[#1c1528]">
+                <SidebarMenuButton 
+                  tooltip="Create New Project" 
+                  className="text-white hover:bg-[#1c1528]"
+                  onClick={handleCreateProject}
+                >
                   <Plus className="text-white" />
                   <span>Create New Project</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
+              
+              {projects.length > 0 && (
+                <>
+                  <SidebarGroupLabel className="text-white mt-4 px-2">Project History</SidebarGroupLabel>
+                  {projects.map(project => (
+                    <SidebarMenuItem key={project.id}>
+                      <SidebarMenuButton 
+                        tooltip={project.name}
+                        className="ml-4 text-white hover:bg-[#1c1528]"
+                      >
+                        <span>{project.name}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -56,7 +86,11 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Account" className="text-white hover:bg-[#1c1528]">
+            <SidebarMenuButton 
+              tooltip="Account" 
+              className="text-white hover:bg-[#1c1528]"
+              onClick={() => navigate('/demo/profile')}
+            >
               <User className="text-white" />
               <span>Account</span>
             </SidebarMenuButton>
