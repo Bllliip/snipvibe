@@ -71,9 +71,7 @@ const Hero1 = () => {
 
           {/* Suggestion pills */}
           <div className="flex flex-wrap justify-center gap-2 mt-12 max-w-2xl mx-auto">
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
-              Launch a blog with Astro
-            </button>
+            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">make a sea video</button>
             <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
               Develop an app using NativeScript
             </button>
