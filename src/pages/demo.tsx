@@ -5,6 +5,7 @@
 import { Hero1 } from "@/components/ui/hero-1";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { HoverButton } from "@/components/ui/hover-button";
 
 const DemoOne = () => {
   return (
@@ -19,7 +20,15 @@ const DemoOne = () => {
   );
 };
 
+const HoverButtonDemo = () => {
+  return (
+    <div className="min-h-screen grid place-items-center bg-[#0c0414]">
+      <HoverButton>Get Started</HoverButton>
+    </div>
+  );
+};
+
 // IMPORTANT:
 // format of the export MUST be export default { DemoOneOrOtherName }
 // if you don't do this, the demo will not be shown
-export default { DemoOne };
+export default { DemoOne, HoverButtonDemo };
