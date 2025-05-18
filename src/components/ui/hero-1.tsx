@@ -54,9 +54,7 @@ const Hero1 = () => {
           <h1 className="font-bold leading-tight text-4xl text-violet-200">make money off clips effortlessly</h1>
 
           {/* Subtitle */}
-          <p className="text-md">
-            HextaAI can create amazing websites with few lines of prompt.
-          </p>
+          <p className="text-md">create amazing clips and make money using ai</p>
 
           {/* Search bar */}
           <div className="relative max-w-2xl mx-auto w-full">
