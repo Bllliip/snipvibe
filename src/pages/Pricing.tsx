@@ -8,14 +8,14 @@ const defaultTiers = [
   {
     name: "Starter",
     price: {
-      monthly: 15,
-      yearly: 144,
+      monthly: 0,
+      yearly: 0,
     },
     description: "Perfect for individuals and small projects",
     icon: (
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-500/30 to-gray-500/30 blur-2xl rounded-full" />
-        <Zap className="w-7 h-7 relative z-10 text-gray-500 dark:text-gray-400 animate-[float_3s_ease-in-out_infinite]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-purple-500/30 blur-2xl rounded-full" />
+        <Zap className="w-7 h-7 relative z-10 text-purple-500 dark:text-purple-400 animate-[float_3s_ease-in-out_infinite]" />
       </div>
     ),
     features: [
@@ -44,15 +44,15 @@ const defaultTiers = [
   {
     name: "Pro",
     price: {
-      monthly: 49,
-      yearly: 470,
+      monthly: 40,
+      yearly: 100,
     },
     description: "Ideal for growing teams and businesses",
     highlight: true,
     badge: "Most Popular",
     icon: (
       <div className="relative">
-        <ArrowDownToLine className="w-7 h-7 relative z-10" />
+        <ArrowDownToLine className="w-7 h-7 relative z-10 text-purple-400" />
       </div>
     ),
     features: [

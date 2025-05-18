@@ -37,35 +37,33 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
 
   const buttonStyles = {
     default: cn(
-      "h-12 bg-white dark:bg-zinc-900",
-      "hover:bg-zinc-50 dark:hover:bg-zinc-800",
-      "text-zinc-900 dark:text-zinc-100",
-      "border border-zinc-200 dark:border-zinc-800",
-      "hover:border-zinc-300 dark:hover:border-zinc-700",
+      "h-12 bg-[#1c1528] hover:bg-[#2a1f3d]",
+      "text-white",
+      "border border-[#3d2e59]",
+      "hover:border-[#4d3a69]",
       "shadow-sm hover:shadow-md",
       "text-sm font-medium",
     ),
     highlight: cn(
-      "h-12 bg-zinc-900 dark:bg-zinc-100",
-      "hover:bg-zinc-800 dark:hover:bg-zinc-300",
-      "text-white dark:text-zinc-900",
-      "shadow-[0_1px_15px_rgba(0,0,0,0.1)]",
-      "hover:shadow-[0_1px_20px_rgba(0,0,0,0.15)]",
+      "h-12 bg-purple-800 hover:bg-purple-700",
+      "text-white",
+      "shadow-[0_1px_15px_rgba(168,85,247,0.3)]",
+      "hover:shadow-[0_1px_20px_rgba(168,85,247,0.4)]",
       "font-semibold text-base",
     ),
   }
 
   const badgeStyles = cn(
     "px-4 py-1.5 text-sm font-medium",
-    "bg-zinc-900 dark:bg-zinc-100",
-    "text-white dark:text-zinc-900",
+    "bg-purple-800",
+    "text-white",
     "border-none shadow-lg",
   )
 
   return (
     <section
       className={cn(
-        "relative bg-background text-foreground",
+        "relative bg-[#0c0414] text-white",
         "py-12 px-4 md:py-24 lg:py-32",
         "overflow-hidden",
         className,
@@ -73,10 +71,10 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
     >
       <div className="w-full max-w-5xl mx-auto">
         <div className="flex flex-col items-center gap-4 mb-12">
-          <h2 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+          <h2 className="text-3xl font-bold text-white">
             Simple, transparent pricing
           </h2>
-          <div className="inline-flex items-center p-1.5 bg-white dark:bg-zinc-800/50 rounded-full border border-zinc-200 dark:border-zinc-700 shadow-sm">
+          <div className="inline-flex items-center p-1.5 bg-[#1c1528]/50 rounded-full border border-[#3d2e59] shadow-sm">
             {["Monthly", "Yearly"].map((period) => (
               <button
                 key={period}
@@ -84,8 +82,8 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
                 className={cn(
                   "px-8 py-2.5 text-sm font-medium rounded-full transition-all duration-300",
                   (period === "Yearly") === isYearly
-                    ? "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-lg"
-                    : "text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100",
+                    ? "bg-purple-800 text-white shadow-lg"
+                    : "text-gray-400 hover:text-white",
                 )}
               >
                 {period}
@@ -103,12 +101,12 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
                 "rounded-3xl transition-all duration-300",
                 "flex flex-col",
                 tier.highlight
-                  ? "bg-gradient-to-b from-zinc-100/80 to-transparent dark:from-zinc-400/[0.15]"
-                  : "bg-white dark:bg-zinc-800/50",
+                  ? "bg-gradient-to-b from-[#3d2e59]/30 to-transparent"
+                  : "bg-[#1c1528]/50",
                 "border",
                 tier.highlight
-                  ? "border-zinc-400/50 dark:border-zinc-400/20 shadow-xl"
-                  : "border-zinc-200 dark:border-zinc-700 shadow-md",
+                  ? "border-purple-500/30 shadow-xl"
+                  : "border-[#3d2e59] shadow-md",
                 "hover:translate-y-0 hover:shadow-lg",
               )}
             >
@@ -124,27 +122,39 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
                     className={cn(
                       "p-3 rounded-xl",
                       tier.highlight
-                        ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400",
+                        ? "bg-[#2a1f3d] text-white"
+                        : "bg-[#1c1528] text-gray-300",
                     )}
                   >
                     {tier.icon}
                   </div>
-                  <h3 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+                  <h3 className="text-xl font-semibold text-white">
                     {tier.name}
                   </h3>
                 </div>
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-zinc-900 dark:text-zinc-100">
-                      ${isYearly ? tier.price.yearly : tier.price.monthly}
+                    <span className="text-4xl font-bold text-white">
+                      {isYearly ? (
+                        tier.price.yearly === 0 ? (
+                          "Free"
+                        ) : (
+                          "$" + tier.price.yearly
+                        )
+                      ) : tier.price.monthly === 0 ? (
+                        "Free"
+                      ) : (
+                        "$" + tier.price.monthly
+                      )}
                     </span>
-                    <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                      /{isYearly ? "year" : "month"}
-                    </span>
+                    {((isYearly && tier.price.yearly !== 0) || (!isYearly && tier.price.monthly !== 0)) && (
+                      <span className="text-sm text-gray-400">
+                        /{isYearly ? "year" : "month"}
+                      </span>
+                    )}
                   </div>
-                  <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                  <p className="mt-2 text-sm text-gray-300">
                     {tier.description}
                   </p>
                 </div>
@@ -156,17 +166,17 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
                         className={cn(
                           "mt-1 p-0.5 rounded-full transition-colors duration-200",
                           feature.included
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-zinc-400 dark:text-zinc-600",
+                            ? "text-purple-400"
+                            : "text-gray-600",
                         )}
                       >
                         <CheckIcon className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                        <div className="text-sm font-medium text-white">
                           {feature.name}
                         </div>
-                        <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                        <div className="text-sm text-gray-400">
                           {feature.description}
                         </div>
                       </div>
