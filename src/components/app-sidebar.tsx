@@ -1,6 +1,7 @@
 
 import * as React from "react";
 import { Plus, Star, User, Zap } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -14,6 +15,12 @@ import {
 } from "@/components/ui/sidebar";
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const handleUpgradeClick = () => {
+    navigate('/pricing');
+  };
+
   return (
     <Sidebar className="bg-[#0c0414]">
       <SidebarHeader>
@@ -39,7 +46,11 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Upgrade" className="text-white hover:bg-[#1c1528]">
+            <SidebarMenuButton 
+              onClick={handleUpgradeClick} 
+              tooltip="Upgrade" 
+              className="text-white hover:bg-[#1c1528]"
+            >
               <Star className="text-white" />
               <span>Upgrade</span>
             </SidebarMenuButton>
