@@ -43,12 +43,7 @@ const Hero1 = () => {
       <main className="flex-1 flex flex-col items-center justify-center px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="flex-1 flex justify-center">
-            <div className="bg-[#1c1528] rounded-full px-4 py-2 flex items-center gap-2  w-fit mx-4">
-              <span className="text-xs flex items-center gap-2">
-                <span className="bg-black p-1 rounded-full">🥳</span>
-                Introducing Magic Components
-              </span>
-            </div>
+            
           </div>
           {/* Headline */}
           <h1 className="font-bold leading-tight text-4xl text-violet-200">make money off clips effortlessly</h1>
@@ -62,28 +57,18 @@ const Hero1 = () => {
               <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
                 <Paperclip className="w-5 h-5 text-gray-400" />
               </button>
-              <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                <Sparkles className="w-5 h-5 text-purple-400" />
-              </button>
+              
               <input type="text" placeholder="How HextaAI can help you today?" className="bg-transparent flex-1 outline-none text-gray-300 pl-4" />
             </div>
           </div>
 
           {/* Suggestion pills */}
           <div className="flex flex-wrap justify-center gap-2 mt-12 max-w-2xl mx-auto">
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">make a sea video</button>
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
-              Develop an app using NativeScript
-            </button>
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
-              Build documentation with Vitepress
-            </button>
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
-              Generate UI with shadcn
-            </button>
-            <button className="bg-[#1c1528] hover:bg-[#2a1f3d] rounded-full px-4 py-2 text-sm">
-              Generate UI with HextaUI
-            </button>
+            
+            
+            
+            
+            
           </div>
         </div>
       </main>
