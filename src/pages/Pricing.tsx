@@ -1,95 +1,99 @@
 
-import { Sparkles, Zap, ArrowDownToLine } from "lucide-react";
 import { PricingSection } from "@/components/ui/pricing-section";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { X, Sparkles, Zap, ArrowDownToLine } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-const defaultTiers = [
+const tiers = [
   {
-    name: "Starter",
+    name: "Free",
     price: {
       monthly: 0,
       yearly: 0,
     },
-    description: "Perfect for individuals and small projects",
-    icon: (
-      <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/30 to-purple-500/30 blur-2xl rounded-full" />
-        <Zap className="w-7 h-7 relative z-10 text-purple-500 dark:text-purple-400 animate-[float_3s_ease-in-out_infinite]" />
-      </div>
-    ),
+    description: "Get started with basic video editing tools",
     features: [
       {
-        name: "Basic Analytics",
-        description: "Track essential metrics and user behavior",
+        name: "5 videos per month",
+        description: "Create up to 5 videos each month",
         included: true,
       },
       {
-        name: "5 Team Members",
-        description: "Collaborate with a small team",
+        name: "720p exports",
+        description: "Export videos in HD quality",
         included: true,
       },
       {
-        name: "Basic Support",
-        description: "Email support with 24h response time",
+        name: "Basic templates",
+        description: "Access to a limited set of templates",
         included: true,
       },
       {
-        name: "API Access",
-        description: "Limited API access for basic integrations",
+        name: "AI-powered features",
+        description: "Limited access to AI features",
+        included: false,
+      },
+      {
+        name: "Watermark-free exports",
+        description: "Remove the ClipVibe watermark",
         included: false,
       },
     ],
+    icon: <Zap className="w-5 h-5" />,
   },
   {
     name: "Pro",
     price: {
-      monthly: 40,
-      yearly: 100,
+      monthly: 12,
+      yearly: 120,
     },
-    description: "Ideal for growing teams and businesses",
-    highlight: true,
-    badge: "Most Popular",
-    icon: (
-      <div className="relative">
-        <ArrowDownToLine className="w-7 h-7 relative z-10 text-purple-400" />
-      </div>
-    ),
+    description: "Unlock premium features for creators",
     features: [
       {
-        name: "Advanced Analytics",
-        description: "Deep insights and custom reports",
+        name: "Unlimited videos",
+        description: "Create as many videos as you want",
         included: true,
       },
       {
-        name: "Unlimited Team Members",
-        description: "Scale your team without limits",
+        name: "4K exports",
+        description: "Export videos in ultra-high quality",
         included: true,
       },
       {
-        name: "Priority Support",
-        description: "24/7 priority email and chat support",
+        name: "Premium templates",
+        description: "Access to all templates",
         included: true,
       },
       {
-        name: "Full API Access",
-        description: "Complete API access with higher rate limits",
+        name: "AI-powered features",
+        description: "Full access to AI features",
+        included: true,
+      },
+      {
+        name: "Watermark-free exports",
+        description: "No ClipVibe watermark on exports",
         included: true,
       },
     ],
+    highlight: true,
+    badge: "Most Popular",
+    icon: <Sparkles className="w-5 h-5" />,
   },
 ];
 
 const Pricing = () => {
+  const navigate = useNavigate();
+  
   return (
-    <SidebarProvider>
-      <div className="flex w-full min-h-screen bg-[#0c0414] text-white">
-        <AppSidebar />
-        <div className="flex-1">
-          <PricingSection tiers={defaultTiers} />
-        </div>
-      </div>
-    </SidebarProvider>
+    <div className="relative min-h-screen">
+      <button 
+        onClick={() => navigate('/demo')}
+        className="absolute top-4 right-4 z-20 p-2 rounded-full bg-[#1c1528]/50 text-white hover:bg-[#1c1528] transition-colors"
+        aria-label="Close"
+      >
+        <X className="h-5 w-5" />
+      </button>
+      <PricingSection tiers={tiers} />
+    </div>
   );
 };
 
