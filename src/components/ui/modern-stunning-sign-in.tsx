@@ -1,8 +1,11 @@
+
 "use client";
 
 import * as React from "react";
 import { useState } from "react";
 import { Zap } from "lucide-react";
+import { Link } from "react-router-dom";
+
 const SignIn1 = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -53,9 +56,9 @@ const SignIn1 = () => {
             <div className="w-full text-center mt-2">
               <span className="text-xs text-gray-400">
                 Don&apos;t have an account?{" "}
-                <a href="#" className="underline text-white/80 hover:text-white">
+                <Link to="/sign-up" className="underline text-white/80 hover:text-white">
                   Sign up, it&apos;s free!
-                </a>
+                </Link>
               </span>
             </div>
           </div>
