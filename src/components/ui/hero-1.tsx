@@ -70,11 +70,6 @@ const Hero1 = () => {
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 text-center">
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* Headline */}
-          <div className={`transition-all duration-500 ease-in-out ${isAnimating ? 'transform -translate-y-32 scale-90 opacity-70' : ''}`}>
-            <h1 className="font-bold leading-tight text-4xl text-violet-200">make money off clips effortlessly</h1>
-          </div>
-
           {/* Search bar */}
           <div className={`relative max-w-2xl mx-auto w-full transition-all duration-500 ease-in-out ${isAnimating ? 'transform translate-y-48' : ''}`}>
             <div className="bg-[#1c1528] rounded-full p-3 flex items-center">

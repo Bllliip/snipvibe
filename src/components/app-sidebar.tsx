@@ -1,24 +1,35 @@
+
 import * as React from "react";
 import { Plus, Star, User, Zap } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+
 export function AppSidebar() {
   const navigate = useNavigate();
   const [projects, setProjects] = React.useState<{
     id: string;
     name: string;
-  }[]>([]);
+  }[]>([
+    {
+      id: 'default-chat',
+      name: 'make money off clips...'
+    }
+  ]);
+
   const handleUpgradeClick = () => {
     navigate('/pricing');
   };
+
   const handleCreateProject = () => {
     const newProject = {
       id: `project-${Date.now()}`,
-      name: `Project ${projects.length + 1}`
+      name: `Project ${projects.length}`
     };
     setProjects(prev => [newProject, ...prev]);
   };
-  return <Sidebar className="bg-[#0c0414]">
+
+  return (
+    <Sidebar className="bg-[#0c0414]">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Zap className="h-5 w-5 text-white" />
@@ -36,14 +47,18 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               
-              {projects.length > 0 && <>
-                  <SidebarGroupLabel className="text-white mt-4 px-2">Project History</SidebarGroupLabel>
-                  {projects.map(project => <SidebarMenuItem key={project.id}>
+              {projects.length > 0 && (
+                <>
+                  <SidebarGroupLabel className="text-white mt-4 px-2">Chat History</SidebarGroupLabel>
+                  {projects.map(project => (
+                    <SidebarMenuItem key={project.id}>
                       <SidebarMenuButton tooltip={project.name} className="ml-4 text-white hover:bg-[#1c1528]">
                         <span>{project.name}</span>
                       </SidebarMenuButton>
-                    </SidebarMenuItem>)}
-                </>}
+                    </SidebarMenuItem>
+                  ))}
+                </>
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -64,5 +79,6 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-    </Sidebar>;
+    </Sidebar>
+  );
 }
