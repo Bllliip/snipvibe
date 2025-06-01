@@ -12,6 +12,8 @@ const Hero1 = () => {
   const [inputValue, setInputValue] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
+  const [showChat, setShowChat] = React.useState(false);
+  const [messages, setMessages] = React.useState<{id: string, text: string, isUser: boolean}[]>([]);
 
   const handleGetStarted = () => {
     navigate('/sign-in');
@@ -20,10 +22,33 @@ const Hero1 = () => {
   const handleSend = () => {
     if (!inputValue.trim()) return;
     
+    // Add user message
+    const userMessage = {
+      id: `user-${Date.now()}`,
+      text: inputValue,
+      isUser: true
+    };
+    
+    setMessages(prev => [...prev, userMessage]);
+    
     setIsAnimating(true);
     setTimeout(() => {
       setIsGenerating(true);
+      setShowChat(true);
+      
+      // Simulate AI response
+      setTimeout(() => {
+        const aiMessage = {
+          id: `ai-${Date.now()}`,
+          text: "I'll help you with that! Let me analyze your request and provide you with a comprehensive strategy.",
+          isUser: false
+        };
+        setMessages(prev => [...prev, aiMessage]);
+        setIsGenerating(false);
+      }, 2000);
     }, 500);
+    
+    setInputValue("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -69,18 +94,54 @@ const Hero1 = () => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col items-center justify-center px-4 text-center">
-        <div className="max-w-4xl mx-auto space-y-6">
+        <div className="max-w-6xl mx-auto space-y-6 w-full">
+          {/* Chat Messages */}
+          {showChat && (
+            <div className="max-w-4xl mx-auto mb-8 space-y-4 max-h-96 overflow-y-auto">
+              {messages.map(message => (
+                <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
+                    message.isUser 
+                      ? 'bg-violet-600 text-white' 
+                      : 'bg-[#1c1528] text-gray-300'
+                  }`}>
+                    {message.text}
+                  </div>
+                </div>
+              ))}
+              
+              {/* Generation State */}
+              {isGenerating && (
+                <div className="flex justify-start">
+                  <div className="bg-[#1c1528] rounded-lg p-4 max-w-xs lg:max-w-md">
+                    <div className="flex items-center gap-2 text-violet-200 mb-2">
+                      <Sparkles className="w-4 h-4 animate-pulse" />
+                      <span className="text-sm">Generating response...</span>
+                    </div>
+                    <div className="space-y-2">
+                      <div className="h-2 bg-gradient-to-r from-violet-400/20 to-blue-400/20 rounded animate-pulse"></div>
+                      <div className="h-2 bg-gradient-to-r from-blue-400/20 to-violet-400/20 rounded animate-pulse w-3/4"></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Search bar */}
-          <div className={`relative max-w-2xl mx-auto w-full transition-all duration-500 ease-in-out ${isAnimating ? 'transform translate-y-48' : ''}`}>
-            <div className="bg-[#1c1528] rounded-full p-3 flex items-center">
+          <div className={`relative max-w-4xl mx-auto w-full transition-all duration-500 ease-in-out ${
+            isAnimating && !showChat ? 'transform translate-y-32' : 
+            showChat ? 'fixed bottom-6 left-1/2 transform -translate-x-1/2 max-w-4xl' : ''
+          }`}>
+            <div className="bg-[#1c1528] rounded-full p-4 flex items-center shadow-lg">
               <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                <Paperclip className="w-5 h-5 text-gray-400" />
+                <Paperclip className="w-6 h-6 text-gray-400" />
               </button>
               
               <input 
                 type="text" 
                 placeholder="How ClipVibe can help you today?" 
-                className="bg-transparent flex-1 outline-none text-gray-300 pl-4 pr-4"
+                className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
@@ -92,27 +153,10 @@ const Hero1 = () => {
                 disabled={!inputValue.trim() || isGenerating}
                 className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-5 h-5 text-gray-400" />
+                <Send className="w-6 h-6 text-gray-400" />
               </button>
             </div>
           </div>
-
-          {/* Generation State */}
-          {isGenerating && (
-            <div className="animate-fade-in mt-8">
-              <div className="flex items-center justify-center gap-2 text-violet-200">
-                <Sparkles className="w-5 h-5 animate-pulse" />
-                <span>Generating your clip strategy...</span>
-              </div>
-              <div className="mt-4 bg-[#1c1528] rounded-lg p-6 max-w-2xl mx-auto">
-                <div className="space-y-3">
-                  <div className="h-4 bg-gradient-to-r from-violet-400/20 to-blue-400/20 rounded animate-pulse"></div>
-                  <div className="h-4 bg-gradient-to-r from-blue-400/20 to-violet-400/20 rounded animate-pulse w-3/4"></div>
-                  <div className="h-4 bg-gradient-to-r from-violet-400/20 to-blue-400/20 rounded animate-pulse w-1/2"></div>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </main>
     </div>
