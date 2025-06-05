@@ -93,11 +93,11 @@ const Hero1 = () => {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+      <main className={`flex-1 flex flex-col ${showChat ? 'pb-24' : 'items-center justify-center'} px-4 text-center`}>
         <div className="max-w-6xl mx-auto space-y-6 w-full">
           {/* Chat Messages */}
           {showChat && (
-            <div className="max-w-4xl mx-auto mb-8 space-y-4 max-h-96 overflow-y-auto">
+            <div className="max-w-4xl mx-auto space-y-4 flex-1 overflow-y-auto">
               {messages.map(message => (
                 <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
@@ -128,11 +128,43 @@ const Hero1 = () => {
             </div>
           )}
 
-          {/* Search bar */}
-          <div className={`relative max-w-4xl mx-auto w-full transition-all duration-500 ease-in-out ${
-            isAnimating && !showChat ? 'transform translate-y-32' : 
-            showChat ? 'fixed bottom-6 left-1/2 transform -translate-x-1/2 max-w-4xl' : ''
-          }`}>
+          {/* Search bar - positioned at bottom when chat is active */}
+          {!showChat && (
+            <div className={`relative max-w-4xl mx-auto w-full transition-all duration-500 ease-in-out ${
+              isAnimating ? 'transform translate-y-32' : ''
+            }`}>
+              <div className="bg-[#1c1528] rounded-full p-4 flex items-center shadow-lg">
+                <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
+                  <Paperclip className="w-6 h-6 text-gray-400" />
+                </button>
+                
+                <input 
+                  type="text" 
+                  placeholder="How ClipVibe can help you today?" 
+                  className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
+                  disabled={isGenerating}
+                />
+                
+                <button 
+                  onClick={handleSend}
+                  disabled={!inputValue.trim() || isGenerating}
+                  className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Send className="w-6 h-6 text-gray-400" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Fixed bottom input when chat is active */}
+      {showChat && (
+        <div className="fixed bottom-0 left-0 right-0 bg-[#0c0414] border-t border-[#1c1528] p-4">
+          <div className="max-w-4xl mx-auto">
             <div className="bg-[#1c1528] rounded-full p-4 flex items-center shadow-lg">
               <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
                 <Paperclip className="w-6 h-6 text-gray-400" />
@@ -140,7 +172,7 @@ const Hero1 = () => {
               
               <input 
                 type="text" 
-                placeholder="How ClipVibe can help you today?" 
+                placeholder="Message ClipVibe..." 
                 className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
                 value={inputValue}
                 onChange={handleInputChange}
@@ -158,7 +190,7 @@ const Hero1 = () => {
             </div>
           </div>
         </div>
-      </main>
+      )}
     </div>
   );
 };
