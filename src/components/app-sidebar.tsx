@@ -1,8 +1,9 @@
 
 import * as React from "react";
-import { Plus, Star, User, Zap } from "lucide-react";
+import { Plus, Star, User, Zap, MoreVertical, Pin, Edit, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface Message {
   id: string;
@@ -14,6 +15,7 @@ interface Project {
   id: string;
   name: string;
   messages: Message[];
+  isPinned?: boolean;
 }
 
 // Create a context to share chat data between sidebar and main content
@@ -24,6 +26,9 @@ export const ChatContext = React.createContext<{
   setActiveProjectId: React.Dispatch<React.SetStateAction<string>>;
   updateProjectMessages: (projectId: string, messages: Message[]) => void;
   createNewProject: () => void;
+  pinProject: (projectId: string) => void;
+  editProjectName: (projectId: string, newName: string) => void;
+  deleteProject: (projectId: string) => void;
 } | null>(null);
 
 export function ChatProvider({ children }: { children: React.ReactNode }) {
@@ -31,7 +36,8 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     {
       id: 'default-chat',
       name: 'make money off clips...',
-      messages: []
+      messages: [],
+      isPinned: false
     }
   ]);
   const [activeProjectId, setActiveProjectId] = React.useState('default-chat');
@@ -48,10 +54,38 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     const newProject: Project = {
       id: `project-${Date.now()}`,
       name: 'How ClipVibe can help you today?',
-      messages: []
+      messages: [],
+      isPinned: false
     };
     setProjects(prev => [newProject, ...prev]);
     setActiveProjectId(newProject.id);
+  };
+
+  const pinProject = (projectId: string) => {
+    setProjects(prev => prev.map(project => 
+      project.id === projectId 
+        ? { ...project, isPinned: !project.isPinned }
+        : project
+    ));
+  };
+
+  const editProjectName = (projectId: string, newName: string) => {
+    setProjects(prev => prev.map(project => 
+      project.id === projectId 
+        ? { ...project, name: newName }
+        : project
+    ));
+  };
+
+  const deleteProject = (projectId: string) => {
+    setProjects(prev => {
+      const filtered = prev.filter(project => project.id !== projectId);
+      // If we're deleting the active project, switch to the first available one
+      if (activeProjectId === projectId && filtered.length > 0) {
+        setActiveProjectId(filtered[0].id);
+      }
+      return filtered;
+    });
   };
 
   const value = {
@@ -60,7 +94,10 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
     setProjects,
     setActiveProjectId,
     updateProjectMessages,
-    createNewProject
+    createNewProject,
+    pinProject,
+    editProjectName,
+    deleteProject
   };
 
   return (
@@ -73,12 +110,14 @@ export function ChatProvider({ children }: { children: React.ReactNode }) {
 export function AppSidebar() {
   const navigate = useNavigate();
   const chatContext = React.useContext(ChatContext);
+  const [editingProjectId, setEditingProjectId] = React.useState<string | null>(null);
+  const [editingName, setEditingName] = React.useState('');
   
   if (!chatContext) {
     throw new Error('AppSidebar must be used within ChatProvider');
   }
 
-  const { projects, activeProjectId, setActiveProjectId, createNewProject } = chatContext;
+  const { projects, activeProjectId, setActiveProjectId, createNewProject, pinProject, editProjectName, deleteProject } = chatContext;
 
   const handleUpgradeClick = () => {
     navigate('/pricing');
@@ -91,6 +130,31 @@ export function AppSidebar() {
   const handleProjectClick = (projectId: string) => {
     setActiveProjectId(projectId);
   };
+
+  const handleEditStart = (project: Project) => {
+    setEditingProjectId(project.id);
+    setEditingName(project.name);
+  };
+
+  const handleEditSubmit = (projectId: string) => {
+    if (editingName.trim()) {
+      editProjectName(projectId, editingName.trim());
+    }
+    setEditingProjectId(null);
+    setEditingName('');
+  };
+
+  const handleEditCancel = () => {
+    setEditingProjectId(null);
+    setEditingName('');
+  };
+
+  // Sort projects: pinned first, then by creation time (newest first)
+  const sortedProjects = [...projects].sort((a, b) => {
+    if (a.isPinned && !b.isPinned) return -1;
+    if (!a.isPinned && b.isPinned) return 1;
+    return 0;
+  });
 
   return (
     <Sidebar className="bg-[#0c0414]">
@@ -111,20 +175,78 @@ export function AppSidebar() {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               
-              {projects.length > 0 && (
+              {sortedProjects.length > 0 && (
                 <>
                   <SidebarGroupLabel className="text-white mt-4 px-2">Chat History</SidebarGroupLabel>
-                  {projects.map(project => (
+                  {sortedProjects.map(project => (
                     <SidebarMenuItem key={project.id}>
-                      <SidebarMenuButton 
-                        tooltip={project.name} 
-                        className={`ml-4 text-white hover:bg-[#1c1528] ${
-                          activeProjectId === project.id ? 'bg-[#1c1528]' : ''
-                        }`}
-                        onClick={() => handleProjectClick(project.id)}
-                      >
-                        <span>{project.name}</span>
-                      </SidebarMenuButton>
+                      <div className="flex items-center group w-full">
+                        <SidebarMenuButton 
+                          tooltip={project.name} 
+                          className={`flex-1 ml-4 text-white hover:bg-[#1c1528] ${
+                            activeProjectId === project.id ? 'bg-[#1c1528]' : ''
+                          }`}
+                          onClick={() => handleProjectClick(project.id)}
+                        >
+                          <div className="flex items-center gap-2 w-full">
+                            {project.isPinned && <Pin className="h-3 w-3 text-yellow-400" />}
+                            {editingProjectId === project.id ? (
+                              <input
+                                type="text"
+                                value={editingName}
+                                onChange={(e) => setEditingName(e.target.value)}
+                                onBlur={() => handleEditSubmit(project.id)}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    handleEditSubmit(project.id);
+                                  } else if (e.key === 'Escape') {
+                                    handleEditCancel();
+                                  }
+                                }}
+                                className="bg-transparent border-none outline-none text-white flex-1 min-w-0"
+                                autoFocus
+                                onClick={(e) => e.stopPropagation()}
+                              />
+                            ) : (
+                              <span className="truncate flex-1">{project.name}</span>
+                            )}
+                          </div>
+                        </SidebarMenuButton>
+                        
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button 
+                              className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-[#1c1528] text-white transition-opacity"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <MoreVertical className="h-4 w-4" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="bg-[#1c1528] border-gray-700">
+                            <DropdownMenuItem 
+                              onClick={() => pinProject(project.id)}
+                              className="text-white hover:bg-[#2c2538] cursor-pointer"
+                            >
+                              <Pin className="h-4 w-4 mr-2" />
+                              {project.isPinned ? 'Unpin chat' : 'Pin chat'}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => handleEditStart(project)}
+                              className="text-white hover:bg-[#2c2538] cursor-pointer"
+                            >
+                              <Edit className="h-4 w-4 mr-2" />
+                              Edit chat name
+                            </DropdownMenuItem>
+                            <DropdownMenuItem 
+                              onClick={() => deleteProject(project.id)}
+                              className="text-red-400 hover:bg-[#2c2538] cursor-pointer"
+                            >
+                              <Trash2 className="h-4 w-4 mr-2" />
+                              Delete chat
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
                     </SidebarMenuItem>
                   ))}
                 </>
