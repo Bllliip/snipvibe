@@ -21,11 +21,8 @@ export function AppSidebar() {
   };
 
   const handleCreateProject = () => {
-    const newProject = {
-      id: `project-${Date.now()}`,
-      name: `Project ${projects.length}`
-    };
-    setProjects(prev => [newProject, ...prev]);
+    // Open a new tab with the demo page
+    window.open('/demo', '_blank');
   };
 
   return (
