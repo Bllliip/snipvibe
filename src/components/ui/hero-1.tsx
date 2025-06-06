@@ -6,21 +6,33 @@ import { Paperclip, Sparkles, Zap, Send } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
+import { ChatContext } from "@/components/app-sidebar";
 
 const Hero1 = () => {
   const navigate = useNavigate();
+  const chatContext = React.useContext(ChatContext);
+  
+  if (!chatContext) {
+    throw new Error('Hero1 must be used within ChatProvider');
+  }
+
+  const { projects, activeProjectId, updateProjectMessages } = chatContext;
+  const activeProject = projects.find(p => p.id === activeProjectId);
+  
   const [inputValue, setInputValue] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
-  const [showChat, setShowChat] = React.useState(false);
-  const [messages, setMessages] = React.useState<{id: string, text: string, isUser: boolean}[]>([]);
+  
+  // Get messages from the active project
+  const messages = activeProject?.messages || [];
+  const showChat = messages.length > 0;
 
   const handleGetStarted = () => {
     navigate('/sign-in');
   };
 
   const handleSend = () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() || !activeProject) return;
     
     // Add user message
     const userMessage = {
@@ -29,12 +41,12 @@ const Hero1 = () => {
       isUser: true
     };
     
-    setMessages(prev => [...prev, userMessage]);
+    const newMessages = [...messages, userMessage];
+    updateProjectMessages(activeProject.id, newMessages);
     
     setIsAnimating(true);
     setTimeout(() => {
       setIsGenerating(true);
-      setShowChat(true);
       
       // Simulate AI response
       setTimeout(() => {
@@ -43,7 +55,8 @@ const Hero1 = () => {
           text: "I'll help you with that! Let me analyze your request and provide you with a comprehensive strategy.",
           isUser: false
         };
-        setMessages(prev => [...prev, aiMessage]);
+        const finalMessages = [...newMessages, aiMessage];
+        updateProjectMessages(activeProject.id, finalMessages);
         setIsGenerating(false);
       }, 2000);
     }, 500);

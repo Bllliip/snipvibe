@@ -4,30 +4,88 @@ import { Plus, Star, User, Zap } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 
-export function AppSidebar() {
-  const navigate = useNavigate();
-  const [projects, setProjects] = React.useState<{
-    id: string;
-    name: string;
-  }[]>([
+interface Message {
+  id: string;
+  text: string;
+  isUser: boolean;
+}
+
+interface Project {
+  id: string;
+  name: string;
+  messages: Message[];
+}
+
+// Create a context to share chat data between sidebar and main content
+export const ChatContext = React.createContext<{
+  projects: Project[];
+  activeProjectId: string;
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  setActiveProjectId: React.Dispatch<React.SetStateAction<string>>;
+  updateProjectMessages: (projectId: string, messages: Message[]) => void;
+  createNewProject: () => void;
+} | null>(null);
+
+export function ChatProvider({ children }: { children: React.ReactNode }) {
+  const [projects, setProjects] = React.useState<Project[]>([
     {
       id: 'default-chat',
-      name: 'make money off clips...'
+      name: 'make money off clips...',
+      messages: []
     }
   ]);
   const [activeProjectId, setActiveProjectId] = React.useState('default-chat');
+
+  const updateProjectMessages = (projectId: string, messages: Message[]) => {
+    setProjects(prev => prev.map(project => 
+      project.id === projectId 
+        ? { ...project, messages }
+        : project
+    ));
+  };
+
+  const createNewProject = () => {
+    const newProject: Project = {
+      id: `project-${Date.now()}`,
+      name: 'How ClipVibe can help you today?',
+      messages: []
+    };
+    setProjects(prev => [newProject, ...prev]);
+    setActiveProjectId(newProject.id);
+  };
+
+  const value = {
+    projects,
+    activeProjectId,
+    setProjects,
+    setActiveProjectId,
+    updateProjectMessages,
+    createNewProject
+  };
+
+  return (
+    <ChatContext.Provider value={value}>
+      {children}
+    </ChatContext.Provider>
+  );
+}
+
+export function AppSidebar() {
+  const navigate = useNavigate();
+  const chatContext = React.useContext(ChatContext);
+  
+  if (!chatContext) {
+    throw new Error('AppSidebar must be used within ChatProvider');
+  }
+
+  const { projects, activeProjectId, setActiveProjectId, createNewProject } = chatContext;
 
   const handleUpgradeClick = () => {
     navigate('/pricing');
   };
 
   const handleCreateProject = () => {
-    const newProject = {
-      id: `project-${Date.now()}`,
-      name: 'How ClipVibe can help you today?'
-    };
-    setProjects(prev => [newProject, ...prev]);
-    setActiveProjectId(newProject.id);
+    createNewProject();
   };
 
   const handleProjectClick = (projectId: string) => {

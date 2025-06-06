@@ -1,6 +1,6 @@
 
 import { Hero1 } from "@/components/ui/hero-1";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar, ChatProvider } from "@/components/app-sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { HoverButton } from "@/components/ui/hover-button";
 import { ProfileInfo } from "@/components/ui/profile-info";
@@ -9,14 +9,16 @@ import { useNavigate } from "react-router-dom";
 
 const DemoOne = () => {
   return (
-    <SidebarProvider>
-      <div className="flex w-full min-h-screen">
-        <AppSidebar />
-        <div className="flex-1">
-          <Hero1 />
+    <ChatProvider>
+      <SidebarProvider>
+        <div className="flex w-full min-h-screen">
+          <AppSidebar />
+          <div className="flex-1">
+            <Hero1 />
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </ChatProvider>
   );
 };
 
