@@ -15,14 +15,23 @@ export function AppSidebar() {
       name: 'make money off clips...'
     }
   ]);
+  const [activeProjectId, setActiveProjectId] = React.useState('default-chat');
 
   const handleUpgradeClick = () => {
     navigate('/pricing');
   };
 
   const handleCreateProject = () => {
-    // Open a new tab with the demo page
-    window.open('/demo', '_blank');
+    const newProject = {
+      id: `project-${Date.now()}`,
+      name: 'How ClipVibe can help you today?'
+    };
+    setProjects(prev => [newProject, ...prev]);
+    setActiveProjectId(newProject.id);
+  };
+
+  const handleProjectClick = (projectId: string) => {
+    setActiveProjectId(projectId);
   };
 
   return (
@@ -49,7 +58,13 @@ export function AppSidebar() {
                   <SidebarGroupLabel className="text-white mt-4 px-2">Chat History</SidebarGroupLabel>
                   {projects.map(project => (
                     <SidebarMenuItem key={project.id}>
-                      <SidebarMenuButton tooltip={project.name} className="ml-4 text-white hover:bg-[#1c1528]">
+                      <SidebarMenuButton 
+                        tooltip={project.name} 
+                        className={`ml-4 text-white hover:bg-[#1c1528] ${
+                          activeProjectId === project.id ? 'bg-[#1c1528]' : ''
+                        }`}
+                        onClick={() => handleProjectClick(project.id)}
+                      >
                         <span>{project.name}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
