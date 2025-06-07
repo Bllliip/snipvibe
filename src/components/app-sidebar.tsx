@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { Plus, Star, User, Zap, MoreVertical, Pin, Edit, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -156,7 +157,7 @@ export function AppSidebar() {
   });
 
   return (
-    <Sidebar className="bg-gradient-to-b from-red-900 via-black via-30% via-black via-70% to-blue-900">
+    <Sidebar className="bg-gradient-to-b from-red-900 from-5% via-black via-15% via-black via-85% to-blue-900 to-95%">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Zap className="h-5 w-5 text-white" />
