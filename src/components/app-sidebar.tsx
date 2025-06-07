@@ -156,7 +156,7 @@ export function AppSidebar() {
   });
 
   return (
-    <Sidebar className="bg-gradient-to-b from-red-900 to-black">
+    <Sidebar className="bg-gradient-to-b from-red-900 via-black via-30% via-black via-70% to-blue-900">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Zap className="h-5 w-5 text-white" />
