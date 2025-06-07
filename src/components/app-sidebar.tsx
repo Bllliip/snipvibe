@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Plus, Star, User, Zap, MoreVertical, Pin, Edit, Trash2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -157,7 +156,7 @@ export function AppSidebar() {
   });
 
   return (
-    <Sidebar className="bg-[#0c0414]">
+    <Sidebar className="bg-gradient-to-b from-red-900 to-black">
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Zap className="h-5 w-5 text-white" />
@@ -169,7 +168,7 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Create New Project" className="text-white hover:bg-[#1c1528]" onClick={handleCreateProject}>
+                <SidebarMenuButton tooltip="Create New Project" className="text-white hover:bg-red-800/50" onClick={handleCreateProject}>
                   <Plus className="text-white" />
                   <span>Create New Project</span>
                 </SidebarMenuButton>
@@ -183,8 +182,8 @@ export function AppSidebar() {
                       <div className="flex items-center group w-full">
                         <SidebarMenuButton 
                           tooltip={project.name} 
-                          className={`flex-1 ml-4 text-white hover:bg-[#1c1528] ${
-                            activeProjectId === project.id ? 'bg-[#1c1528]' : ''
+                          className={`flex-1 ml-4 text-white hover:bg-red-800/50 ${
+                            activeProjectId === project.id ? 'bg-red-800/50' : ''
                           }`}
                           onClick={() => handleProjectClick(project.id)}
                         >
@@ -216,30 +215,30 @@ export function AppSidebar() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <button 
-                              className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-[#1c1528] text-white transition-opacity"
+                              className="opacity-0 group-hover:opacity-100 p-1 rounded hover:bg-red-800/50 text-white transition-opacity"
                               onClick={(e) => e.stopPropagation()}
                             >
                               <MoreVertical className="h-4 w-4" />
                             </button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent className="bg-[#1c1528] border-gray-700">
+                          <DropdownMenuContent className="bg-black border-red-800">
                             <DropdownMenuItem 
                               onClick={() => pinProject(project.id)}
-                              className="text-white hover:bg-[#2c2538] cursor-pointer"
+                              className="text-white hover:bg-red-800/50 cursor-pointer"
                             >
                               <Pin className="h-4 w-4 mr-2" />
                               {project.isPinned ? 'Unpin chat' : 'Pin chat'}
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               onClick={() => handleEditStart(project)}
-                              className="text-white hover:bg-[#2c2538] cursor-pointer"
+                              className="text-white hover:bg-red-800/50 cursor-pointer"
                             >
                               <Edit className="h-4 w-4 mr-2" />
                               Edit chat name
                             </DropdownMenuItem>
                             <DropdownMenuItem 
                               onClick={() => deleteProject(project.id)}
-                              className="text-red-400 hover:bg-[#2c2538] cursor-pointer"
+                              className="text-red-400 hover:bg-red-800/50 cursor-pointer"
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
                               Delete chat
@@ -258,13 +257,13 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={handleUpgradeClick} tooltip="Upgrade" className="text-white hover:bg-[#1c1528]">
+            <SidebarMenuButton onClick={handleUpgradeClick} tooltip="Upgrade" className="text-white hover:bg-red-800/50">
               <Star className="text-white bg-gray-950" />
               <span>Upgrade</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Account" className="text-white hover:bg-[#1c1528]" onClick={() => navigate('/demo/profile')}>
+            <SidebarMenuButton tooltip="Account" className="text-white hover:bg-red-800/50" onClick={() => navigate('/demo/profile')}>
               <User className="text-white" />
               <span>Account</span>
             </SidebarMenuButton>

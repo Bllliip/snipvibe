@@ -75,22 +75,12 @@ const Hero1 = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c0414] text-white flex flex-col relative overflow-x-hidden">
-      {/* Gradient */}
-      <div className="flex gap-[10rem] rotate-[-20deg] absolute top-[-40rem] right-[-30rem] z-[0] blur-[4rem] skew-[-40deg]  opacity-50">
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-      </div>
-      <div className="flex gap-[10rem] rotate-[-20deg] absolute top-[-50rem] right-[-50rem] z-[0] blur-[4rem] skew-[-40deg]  opacity-50">
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[20rem]  bg-linear-90 from-white to-blue-300"></div>
-      </div>
-      <div className="flex gap-[10rem] rotate-[-20deg] absolute top-[-60rem] right-[-60rem] z-[0] blur-[4rem] skew-[-40deg]  opacity-50">
-        <div className="w-[10rem] h-[30rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[30rem]  bg-linear-90 from-white to-blue-300"></div>
-        <div className="w-[10rem] h-[30rem]  bg-linear-90 from-white to-blue-300"></div>
+    <div className="min-h-screen bg-gradient-to-r from-red-400 via-black to-blue-600 text-white flex flex-col relative overflow-x-hidden">
+      {/* Gradient overlay effects */}
+      <div className="flex gap-[10rem] rotate-[-20deg] absolute top-[-40rem] right-[-30rem] z-[0] blur-[4rem] skew-[-40deg] opacity-30">
+        <div className="w-[10rem] h-[20rem] bg-gradient-to-r from-red-500 to-blue-500"></div>
+        <div className="w-[10rem] h-[20rem] bg-gradient-to-r from-blue-500 to-red-500"></div>
+        <div className="w-[10rem] h-[20rem] bg-gradient-to-r from-red-500 to-blue-500"></div>
       </div>
 
       {/* Header */}
@@ -115,8 +105,8 @@ const Hero1 = () => {
                 <div key={message.id} className={`flex ${message.isUser ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                     message.isUser 
-                      ? 'bg-violet-600 text-white' 
-                      : 'bg-[#1c1528] text-gray-300'
+                      ? 'bg-gradient-to-r from-red-600 to-red-800 text-white' 
+                      : 'bg-gradient-to-r from-black to-gray-900 text-gray-300 border border-red-800'
                   }`}>
                     {message.text}
                   </div>
@@ -126,14 +116,14 @@ const Hero1 = () => {
               {/* Generation State */}
               {isGenerating && (
                 <div className="flex justify-start">
-                  <div className="bg-[#1c1528] rounded-lg p-4 max-w-xs lg:max-w-md">
-                    <div className="flex items-center gap-2 text-violet-200 mb-2">
+                  <div className="bg-gradient-to-r from-black to-gray-900 border border-red-800 rounded-lg p-4 max-w-xs lg:max-w-md">
+                    <div className="flex items-center gap-2 text-red-200 mb-2">
                       <Sparkles className="w-4 h-4 animate-pulse" />
                       <span className="text-sm">Generating response...</span>
                     </div>
                     <div className="space-y-2">
-                      <div className="h-2 bg-gradient-to-r from-violet-400/20 to-blue-400/20 rounded animate-pulse"></div>
-                      <div className="h-2 bg-gradient-to-r from-blue-400/20 to-violet-400/20 rounded animate-pulse w-3/4"></div>
+                      <div className="h-2 bg-gradient-to-r from-red-400/20 to-blue-400/20 rounded animate-pulse"></div>
+                      <div className="h-2 bg-gradient-to-r from-blue-400/20 to-red-400/20 rounded animate-pulse w-3/4"></div>
                     </div>
                   </div>
                 </div>
@@ -146,15 +136,15 @@ const Hero1 = () => {
             <div className={`relative max-w-4xl mx-auto w-full transition-all duration-500 ease-in-out ${
               isAnimating ? 'transform translate-y-32' : ''
             }`}>
-              <div className="bg-[#1c1528] rounded-full p-4 flex items-center shadow-lg">
-                <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                  <Paperclip className="w-6 h-6 text-gray-400" />
+              <div className="bg-gradient-to-r from-red-600 via-black to-blue-600 rounded-full p-4 flex items-center shadow-lg border border-red-800">
+                <button className="p-2 rounded-full hover:bg-red-800/50 transition-all">
+                  <Paperclip className="w-6 h-6 text-gray-300" />
                 </button>
                 
                 <input 
                   type="text" 
                   placeholder="How ClipVibe can help you today?" 
-                  className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
+                  className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg placeholder-gray-400"
                   value={inputValue}
                   onChange={handleInputChange}
                   onKeyPress={handleKeyPress}
@@ -164,9 +154,9 @@ const Hero1 = () => {
                 <button 
                   onClick={handleSend}
                   disabled={!inputValue.trim() || isGenerating}
-                  className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="p-2 rounded-full hover:bg-red-800/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Send className="w-6 h-6 text-gray-400" />
+                  <Send className="w-6 h-6 text-gray-300" />
                 </button>
               </div>
             </div>
@@ -176,17 +166,17 @@ const Hero1 = () => {
 
       {/* Fixed bottom input when chat is active */}
       {showChat && (
-        <div className="fixed bottom-0 left-0 right-0 bg-[#0c0414] border-t border-[#1c1528] p-4">
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-r from-red-600 via-black to-blue-600 border-t border-red-800 p-4">
           <div className="max-w-4xl mx-auto">
-            <div className="bg-[#1c1528] rounded-full p-4 flex items-center shadow-lg">
-              <button className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all">
-                <Paperclip className="w-6 h-6 text-gray-400" />
+            <div className="bg-gradient-to-r from-red-700 via-black to-blue-700 rounded-full p-4 flex items-center shadow-lg border border-red-800">
+              <button className="p-2 rounded-full hover:bg-red-800/50 transition-all">
+                <Paperclip className="w-6 h-6 text-gray-300" />
               </button>
               
               <input 
                 type="text" 
                 placeholder="Message ClipVibe..." 
-                className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
+                className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg placeholder-gray-400"
                 value={inputValue}
                 onChange={handleInputChange}
                 onKeyPress={handleKeyPress}
@@ -196,9 +186,9 @@ const Hero1 = () => {
               <button 
                 onClick={handleSend}
                 disabled={!inputValue.trim() || isGenerating}
-                className="p-2 rounded-full hover:bg-[#2a1f3d] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2 rounded-full hover:bg-red-800/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Send className="w-6 h-6 text-gray-400" />
+                <Send className="w-6 h-6 text-gray-300" />
               </button>
             </div>
           </div>
