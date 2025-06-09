@@ -4,8 +4,10 @@
 import * as React from "react";
 import { useState } from "react";
 import { Zap } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SignUp1 = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
@@ -39,7 +41,11 @@ const SignUp1 = () => {
     
     setError("");
     setIsSignedUp(true);
-    alert("Sign up successful! Welcome to ClipVibe!");
+  };
+
+  const handleContinueToApp = () => {
+    // Redirect to main page with authenticated parameter
+    navigate('/demo?authenticated=true');
   };
   
   return (
@@ -115,12 +121,12 @@ const SignUp1 = () => {
               <p className="text-sm mt-2">You can now start using ClipVibe.</p>
             </div>
             
-            <a 
-              href="/demo" 
+            <button 
+              onClick={handleContinueToApp}
               className="w-full bg-violet-600 text-white font-medium px-5 py-3 rounded-full shadow hover:bg-violet-700 transition text-sm text-center"
             >
               Continue to App
-            </a>
+            </button>
           </div>
         )}
       </div>

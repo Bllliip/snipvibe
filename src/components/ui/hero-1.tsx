@@ -22,10 +22,20 @@ const Hero1 = () => {
   const [inputValue, setInputValue] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
   const [isAnimating, setIsAnimating] = React.useState(false);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [credits, setCredits] = React.useState(45);
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
   const showChat = messages.length > 0;
+
+  // Check if user came from sign-in/sign-up (simulate authentication)
+  React.useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('authenticated') === 'true') {
+      setIsAuthenticated(true);
+    }
+  }, []);
 
   const handleGetStarted = () => {
     navigate('/sign-in');
@@ -33,6 +43,12 @@ const Hero1 = () => {
 
   const handleSend = () => {
     if (!inputValue.trim() || !activeProject) return;
+    
+    // Check if user is authenticated before allowing chat
+    if (!isAuthenticated) {
+      navigate('/sign-in');
+      return;
+    }
     
     // Add user message
     const userMessage = {
@@ -58,6 +74,8 @@ const Hero1 = () => {
         const finalMessages = [...newMessages, aiMessage];
         updateProjectMessages(activeProject.id, finalMessages);
         setIsGenerating(false);
+        // Decrease credits after successful response
+        setCredits(prev => Math.max(0, prev - 1));
       }, 2000);
     }, 500);
     
@@ -100,9 +118,16 @@ const Hero1 = () => {
           <Zap className="h-5 w-5 text-white" />
           <div className="font-bold text-md">ClipVibe</div>
         </div>
-        <HoverButton onClick={handleGetStarted} className="text-white">
-          Get Started
-        </HoverButton>
+        {isAuthenticated ? (
+          <div className="flex items-center gap-2 bg-[#1c1528] px-4 py-2 rounded-full">
+            <Sparkles className="h-4 w-4 text-yellow-400" />
+            <span className="text-white font-medium">{credits} credits</span>
+          </div>
+        ) : (
+          <HoverButton onClick={handleGetStarted} className="text-white">
+            Get Started
+          </HoverButton>
+        )}
       </header>
 
       {/* Main Content */}

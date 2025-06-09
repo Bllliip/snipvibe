@@ -4,15 +4,18 @@
 import * as React from "react";
 import { useState } from "react";
 import { Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn1 = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
+  
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
+  
   const handleSignIn = () => {
     if (!email || !password) {
       setError("Please enter both email and password.");
@@ -23,8 +26,10 @@ const SignIn1 = () => {
       return;
     }
     setError("");
-    alert("Sign in successful! (Demo)");
+    // Redirect to main page with authenticated parameter
+    navigate('/demo?authenticated=true');
   };
+  
   return <div className="min-h-screen flex flex-col items-center justify-center bg-[#0c0414] relative overflow-hidden w-full rounded-xl">
       {/* Centered glass card */}
       <div className="relative z-10 w-full max-w-sm rounded-3xl bg-gradient-to-r from-[#ffffff10] to-[#0c0414] backdrop-blur-sm shadow-2xl p-8 flex flex-col items-center">
