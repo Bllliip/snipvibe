@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { Plus, Star, User, Zap, MoreVertical, Pin, Edit, Trash2 } from "lucide-react";
+import { Plus, Star, User, Zap, MoreVertical, Pin, Edit, Trash2, Rocket } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -120,6 +120,10 @@ export function AppSidebar() {
   const { projects, activeProjectId, setActiveProjectId, createNewProject, pinProject, editProjectName, deleteProject } = chatContext;
 
   const handleUpgradeClick = () => {
+    navigate('/pricing');
+  };
+
+  const handleGetFullAccessClick = () => {
     navigate('/pricing');
   };
 
@@ -257,6 +261,23 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
+          <SidebarMenuItem>
+            <div className="bg-gradient-to-r from-[#ffffff10] to-[#0c0414] backdrop-blur-sm rounded-xl p-4 mb-2 border border-[#3d2e59]">
+              <div className="flex items-center gap-2 mb-2">
+                <Rocket className="h-4 w-4 text-white" />
+                <span className="text-sm font-medium text-white">Get Full Access</span>
+              </div>
+              <p className="text-xs text-gray-300 mb-3">
+                Unlock more channels, larger storage, and new users.
+              </p>
+              <button
+                onClick={handleGetFullAccessClick}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg transition-colors"
+              >
+                Upgrade to Pro
+              </button>
+            </div>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton onClick={handleUpgradeClick} tooltip="Upgrade" className="text-white hover:bg-[#1c1528]">
               <Star className="text-white bg-gray-950" />
