@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -7,6 +6,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
 import { ChatContext } from "@/components/app-sidebar";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 
 const Hero1 = () => {
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const Hero1 = () => {
   // Get messages from the active project
   const messages = activeProject?.messages || [];
   const showChat = messages.length > 0;
+  const showTypingAnimation = !showChat && !isAuthenticated;
 
   // Check if user came from sign-in/sign-up (simulate authentication)
   React.useEffect(() => {
@@ -175,6 +176,17 @@ const Hero1 = () => {
       {/* Main Content */}
       <main className={`flex-1 flex flex-col ${showChat ? 'pb-24' : 'items-center justify-center'} px-4 text-center`}>
         <div className="max-w-6xl mx-auto space-y-6 w-full">
+          {/* Typing Animation - only show when not authenticated and no chat */}
+          {showTypingAnimation && (
+            <div className="mb-8">
+              <TypingAnimation
+                text="Transform your videos with AI-powered clipping"
+                duration={100}
+                className="text-4xl md:text-5xl font-bold text-white mb-4"
+              />
+            </div>
+          )}
+
           {/* Chat Messages */}
           {showChat && (
             <div className="max-w-4xl mx-auto space-y-4 flex-1 overflow-y-auto">
