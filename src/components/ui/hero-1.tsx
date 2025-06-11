@@ -30,7 +30,7 @@ const Hero1 = () => {
   // Get messages from the active project
   const messages = activeProject?.messages || [];
   const showChat = messages.length > 0;
-  const showTypingAnimation = !showChat && !isAuthenticated;
+  const showTypingAnimation = !showChat;
 
   // Check if user came from sign-in/sign-up (simulate authentication)
   React.useEffect(() => {
@@ -176,11 +176,11 @@ const Hero1 = () => {
       {/* Main Content */}
       <main className={`flex-1 flex flex-col ${showChat ? 'pb-24' : 'items-center justify-center'} px-4 text-center`}>
         <div className="max-w-6xl mx-auto space-y-6 w-full">
-          {/* Typing Animation - only show when not authenticated and no chat */}
+          {/* Typing Animation - show when no chat exists */}
           {showTypingAnimation && (
             <div className="mb-8">
               <TypingAnimation
-                text="Transform your videos with AI-powered clipping"
+                text="How can I help you?"
                 duration={100}
                 className="text-4xl md:text-5xl font-bold text-white mb-4"
               />
