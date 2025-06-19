@@ -19,6 +19,7 @@ interface PricingTier {
   price: {
     monthly: number
     yearly: number
+    originalYearly?: number
   }
   description: string
   features: Feature[]
@@ -152,6 +153,16 @@ function PricingSection({ tiers, className }: PricingSectionProps) {
                       <span className="text-sm text-gray-400">
                         /{isYearly ? "year" : "month"}
                       </span>
+                    )}
+                    {isYearly && tier.price.originalYearly && (
+                      <div className="flex items-center gap-2 ml-2">
+                        <span className="text-lg text-gray-400 line-through">
+                          ${tier.price.originalYearly}
+                        </span>
+                        <Badge className="bg-green-600 text-white text-xs px-2 py-1">
+                          30% OFF
+                        </Badge>
+                      </div>
                     )}
                   </div>
                   <p className="mt-2 text-sm text-gray-300">

@@ -44,7 +44,8 @@ const tiers = [
     name: "Pro",
     price: {
       monthly: 12,
-      yearly: 120,
+      yearly: 80,
+      originalYearly: 144, // Original price for discount calculation
     },
     description: "Unlock premium features for creators",
     features: [
