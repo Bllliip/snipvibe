@@ -32,13 +32,39 @@ const Hero1 = () => {
   const showChat = messages.length > 0;
   const showTypingAnimation = !showChat;
 
-  // Check if user came from sign-in/sign-up (simulate authentication)
+  // Check authentication on component mount and persist across navigation
   React.useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('authenticated') === 'true') {
+    // Check localStorage first for persistent auth
+    const storedAuth = localStorage.getItem('clipvibe_authenticated');
+    const storedCredits = localStorage.getItem('clipvibe_credits');
+    
+    if (storedAuth === 'true') {
       setIsAuthenticated(true);
+      if (storedCredits) {
+        setCredits(parseInt(storedCredits, 10));
+      }
+    } else {
+      // Fallback to URL params for initial authentication
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('authenticated') === 'true') {
+        setIsAuthenticated(true);
+        // Store authentication in localStorage for persistence
+        localStorage.setItem('clipvibe_authenticated', 'true');
+        localStorage.setItem('clipvibe_credits', credits.toString());
+        
+        // Clean up URL params
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
+      }
     }
   }, []);
+
+  // Update localStorage when credits change
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      localStorage.setItem('clipvibe_credits', credits.toString());
+    }
+  }, [credits, isAuthenticated]);
 
   const handleGetStarted = () => {
     navigate('/sign-in');
