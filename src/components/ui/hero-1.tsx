@@ -2,12 +2,20 @@
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp } from "lucide-react";
+import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2 } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
 import { ChatContext } from "@/components/app-sidebar";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import { Button } from "@/components/ui/button";
+import { 
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Hero1 = () => {
   const navigate = useNavigate();
@@ -27,6 +35,9 @@ const Hero1 = () => {
   const [credits, setCredits] = React.useState(45);
   const [showClipSection, setShowClipSection] = React.useState(false);
   const [videoLink, setVideoLink] = React.useState("");
+  const [showVideoControls, setShowVideoControls] = React.useState(false);
+  const [showPublishOptions, setShowPublishOptions] = React.useState(false);
+  const [selectedPlatform, setSelectedPlatform] = React.useState("");
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
@@ -105,6 +116,8 @@ const Hero1 = () => {
       updateProjectMessages(activeProject.id, finalMessages);
       setIsGenerating(false);
       setCredits(prev => Math.max(0, prev - 1));
+      // Show video controls after generation
+      setShowVideoControls(true);
     }, 2000);
     
     setVideoLink("");
@@ -146,10 +159,34 @@ const Hero1 = () => {
         setIsGenerating(false);
         // Decrease credits after successful response
         setCredits(prev => Math.max(0, prev - 1));
+        // Show video controls after generation
+        setShowVideoControls(true);
       }, 2000);
     }, 500);
     
     setInputValue("");
+  };
+
+  const handleDeleteVideo = () => {
+    setShowVideoControls(false);
+    console.log("Video deleted");
+  };
+
+  const handleFineTune = () => {
+    console.log("Fine-tuning video");
+  };
+
+  const handlePublish = () => {
+    setShowPublishOptions(true);
+  };
+
+  const handlePlatformPublish = () => {
+    if (!selectedPlatform) return;
+    
+    console.log(`Publishing to ${selectedPlatform}`);
+    setShowPublishOptions(false);
+    setShowVideoControls(false);
+    setSelectedPlatform("");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,6 +278,85 @@ const Hero1 = () => {
                       <div className="h-2 bg-gradient-to-r from-violet-400/20 to-blue-400/20 rounded animate-pulse"></div>
                       <div className="h-2 bg-gradient-to-r from-blue-400/20 to-violet-400/20 rounded animate-pulse w-3/4"></div>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Video Controls */}
+              {showVideoControls && !isGenerating && (
+                <div className="flex justify-center">
+                  <div className="bg-[#1c1528] rounded-lg p-4 border border-[#3d2e59]">
+                    <div className="text-center mb-4">
+                      <div className="w-48 h-32 bg-[#0c0414] rounded-lg border border-[#3d2e59] flex items-center justify-center mb-4">
+                        <span className="text-gray-400 text-sm">Generated Video Preview</span>
+                      </div>
+                    </div>
+                    
+                    {!showPublishOptions ? (
+                      <div className="flex flex-col gap-2 w-48">
+                        <Button 
+                          onClick={handleDeleteVideo}
+                          variant="destructive"
+                          className="w-full flex items-center gap-2"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete Video
+                        </Button>
+                        <Button 
+                          onClick={handleFineTune}
+                          variant="outline"
+                          className="w-full flex items-center gap-2 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
+                        >
+                          <Edit3 className="w-4 h-4" />
+                          Fine-tune Video
+                        </Button>
+                        <Button 
+                          onClick={handlePublish}
+                          className="w-full flex items-center gap-2 bg-violet-600 hover:bg-violet-700"
+                        >
+                          <Share2 className="w-4 h-4" />
+                          Publish
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="space-y-4 w-48">
+                        <div className="text-center">
+                          <h3 className="text-white font-medium mb-2">Select Platform</h3>
+                          <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
+                            <SelectTrigger className="w-full bg-[#0c0414] border-[#3d2e59] text-white">
+                              <SelectValue placeholder="Choose platform" />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#1c1528] border-[#3d2e59]">
+                              <SelectItem value="tiktok" className="text-white hover:bg-[#2a1f3d]">
+                                TikTok
+                              </SelectItem>
+                              <SelectItem value="instagram" className="text-white hover:bg-[#2a1f3d]">
+                                Instagram Reels
+                              </SelectItem>
+                              <SelectItem value="youtube" className="text-white hover:bg-[#2a1f3d]">
+                                YouTube Shorts
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="flex gap-2">
+                          <Button 
+                            onClick={() => setShowPublishOptions(false)}
+                            variant="outline"
+                            className="flex-1 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
+                          >
+                            Back
+                          </Button>
+                          <Button 
+                            onClick={handlePlatformPublish}
+                            disabled={!selectedPlatform}
+                            className="flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-50"
+                          >
+                            Publish
+                          </Button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
