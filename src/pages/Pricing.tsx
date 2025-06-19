@@ -34,7 +34,7 @@ const tiers = [
       },
       {
         name: "Watermark-free exports",
-        description: "Remove the ClipVibe watermark",
+        description: "Remove the Snip Vibe watermark",
         included: false,
       },
     ],
@@ -70,7 +70,7 @@ const tiers = [
       },
       {
         name: "Watermark-free exports",
-        description: "No ClipVibe watermark on exports",
+        description: "No Snip Vibe watermark on exports",
         included: true,
       },
     ],

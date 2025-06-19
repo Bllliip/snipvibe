@@ -165,7 +165,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2 p-2">
           <Zap className="h-5 w-5 text-white" />
-          <span className="font-bold text-sm text-white">ClipVibe</span>
+          <span className="font-bold text-sm text-white">Snip Vibe</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

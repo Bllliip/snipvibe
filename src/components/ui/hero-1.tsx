@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -35,8 +36,8 @@ const Hero1 = () => {
   // Check authentication on component mount and persist across navigation
   React.useEffect(() => {
     // Check localStorage first for persistent auth
-    const storedAuth = localStorage.getItem('clipvibe_authenticated');
-    const storedCredits = localStorage.getItem('clipvibe_credits');
+    const storedAuth = localStorage.getItem('snipvibe_authenticated');
+    const storedCredits = localStorage.getItem('snipvibe_credits');
     
     if (storedAuth === 'true') {
       setIsAuthenticated(true);
@@ -49,8 +50,8 @@ const Hero1 = () => {
       if (urlParams.get('authenticated') === 'true') {
         setIsAuthenticated(true);
         // Store authentication in localStorage for persistence
-        localStorage.setItem('clipvibe_authenticated', 'true');
-        localStorage.setItem('clipvibe_credits', credits.toString());
+        localStorage.setItem('snipvibe_authenticated', 'true');
+        localStorage.setItem('snipvibe_credits', credits.toString());
         
         // Clean up URL params
         const newUrl = window.location.pathname;
@@ -62,7 +63,7 @@ const Hero1 = () => {
   // Update localStorage when credits change
   React.useEffect(() => {
     if (isAuthenticated) {
-      localStorage.setItem('clipvibe_credits', credits.toString());
+      localStorage.setItem('snipvibe_credits', credits.toString());
     }
   }, [credits, isAuthenticated]);
 
@@ -185,7 +186,7 @@ const Hero1 = () => {
         <div className="flex items-center gap-2">
           <SidebarTrigger className="mr-2" />
           <Zap className="h-5 w-5 text-white" />
-          <div className="font-bold text-md">ClipVibe</div>
+          <div className="font-bold text-md">Snip Vibe</div>
         </div>
         {isAuthenticated ? (
           <div className="flex items-center gap-2 bg-[#1c1528] px-4 py-2 rounded-full">
@@ -287,7 +288,7 @@ const Hero1 = () => {
                 
                 <input 
                   type="text" 
-                  placeholder="How ClipVibe can help you today?" 
+                  placeholder="How Snip Vibe can help you today?" 
                   className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
                   value={inputValue}
                   onChange={handleInputChange}
@@ -322,7 +323,7 @@ const Hero1 = () => {
               
               <input 
                 type="text" 
-                placeholder="Message ClipVibe..." 
+                placeholder="Message Snip Vibe..." 
                 className="bg-transparent flex-1 outline-none text-gray-300 pl-6 pr-6 text-lg"
                 value={inputValue}
                 onChange={handleInputChange}

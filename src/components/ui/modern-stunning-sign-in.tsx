@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -39,7 +38,7 @@ const SignIn1 = () => {
         </div>
         {/* Title */}
         <h2 className="text-2xl font-semibold text-white mb-6 text-center">
-          ClipVibe
+          Snip Vibe
         </h2>
         {/* Form */}
         <div className="flex flex-col w-full gap-4">

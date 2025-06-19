@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -59,7 +58,7 @@ const SignUp1 = () => {
         
         {/* Title */}
         <h2 className="text-2xl font-semibold text-white mb-6 text-center">
-          {isSignedUp ? "Welcome to ClipVibe!" : "Create Your ClipVibe Account"}
+          {isSignedUp ? "Welcome to Snip Vibe!" : "Create Your Snip Vibe Account"}
         </h2>
         
         {/* Form */}
@@ -118,7 +117,7 @@ const SignUp1 = () => {
           <div className="flex flex-col w-full gap-4 items-center">
             <div className="text-center text-gray-300 mb-4">
               <p className="text-lg">Your account has been created successfully!</p>
-              <p className="text-sm mt-2">You can now start using ClipVibe.</p>
+              <p className="text-sm mt-2">You can now start using Snip Vibe.</p>
             </div>
             
             <button 
