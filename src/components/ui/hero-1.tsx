@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2 } from "lucide-react";
+import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2, MoreHorizontal } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
@@ -16,6 +16,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 const Hero1 = () => {
   const navigate = useNavigate();
@@ -37,7 +43,7 @@ const Hero1 = () => {
   const [videoLink, setVideoLink] = React.useState("");
   const [showVideoControls, setShowVideoControls] = React.useState(false);
   const [showPublishOptions, setShowPublishOptions] = React.useState(false);
-  const [selectedPlatform, setSelectedPlatform] = React.useState("");
+  const [selectedPlatforms, setSelectedPlatforms] = React.useState<string[]>([]);
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
@@ -180,13 +186,21 @@ const Hero1 = () => {
     setShowPublishOptions(true);
   };
 
+  const handlePlatformToggle = (platform: string) => {
+    setSelectedPlatforms(prev => 
+      prev.includes(platform) 
+        ? prev.filter(p => p !== platform)
+        : [...prev, platform]
+    );
+  };
+
   const handlePlatformPublish = () => {
-    if (!selectedPlatform) return;
+    if (selectedPlatforms.length === 0) return;
     
-    console.log(`Publishing to ${selectedPlatform}`);
+    console.log(`Publishing to ${selectedPlatforms.join(', ')}`);
     setShowPublishOptions(false);
     setShowVideoControls(false);
-    setSelectedPlatform("");
+    setSelectedPlatforms([]);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -260,8 +274,40 @@ const Hero1 = () => {
                     message.isUser 
                       ? 'bg-violet-600 text-white' 
                       : 'bg-[#1c1528] text-gray-300'
-                  }`}>
+                  } ${!message.isUser ? 'relative group' : ''}`}>
                     {message.text}
+                    {!message.isUser && (
+                      <ContextMenu>
+                        <ContextMenuTrigger asChild>
+                          <button className="absolute -right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-[#2a1f3d]">
+                            <MoreHorizontal className="w-4 h-4 text-gray-400" />
+                          </button>
+                        </ContextMenuTrigger>
+                        <ContextMenuContent className="bg-[#1c1528] border-[#3d2e59] text-white">
+                          <ContextMenuItem 
+                            onClick={handleDeleteVideo}
+                            className="flex items-center gap-2 hover:bg-[#2a1f3d] text-red-400"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete Video
+                          </ContextMenuItem>
+                          <ContextMenuItem 
+                            onClick={handleFineTune}
+                            className="flex items-center gap-2 hover:bg-[#2a1f3d]"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                            Fine-tune Video
+                          </ContextMenuItem>
+                          <ContextMenuItem 
+                            onClick={handlePublish}
+                            className="flex items-center gap-2 hover:bg-[#2a1f3d]"
+                          >
+                            <Share2 className="w-4 h-4" />
+                            Publish
+                          </ContextMenuItem>
+                        </ContextMenuContent>
+                      </ContextMenu>
+                    )}
                   </div>
                 </div>
               ))}
@@ -321,23 +367,24 @@ const Hero1 = () => {
                     ) : (
                       <div className="space-y-4 w-48">
                         <div className="text-center">
-                          <h3 className="text-white font-medium mb-2">Select Platform</h3>
-                          <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
-                            <SelectTrigger className="w-full bg-[#0c0414] border-[#3d2e59] text-white">
-                              <SelectValue placeholder="Choose platform" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-[#1c1528] border-[#3d2e59]">
-                              <SelectItem value="tiktok" className="text-white hover:bg-[#2a1f3d]">
-                                TikTok
-                              </SelectItem>
-                              <SelectItem value="instagram" className="text-white hover:bg-[#2a1f3d]">
-                                Instagram Reels
-                              </SelectItem>
-                              <SelectItem value="youtube" className="text-white hover:bg-[#2a1f3d]">
-                                YouTube Shorts
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
+                          <h3 className="text-white font-medium mb-2">Select Platforms</h3>
+                          <div className="space-y-2">
+                            {[
+                              { id: 'tiktok', label: 'TikTok' },
+                              { id: 'instagram', label: 'Instagram Reels' },
+                              { id: 'youtube', label: 'YouTube Shorts' }
+                            ].map(platform => (
+                              <label key={platform.id} className="flex items-center gap-2 cursor-pointer">
+                                <input
+                                  type="checkbox"
+                                  checked={selectedPlatforms.includes(platform.id)}
+                                  onChange={() => handlePlatformToggle(platform.id)}
+                                  className="w-4 h-4 text-violet-600 bg-[#0c0414] border-[#3d2e59] rounded focus:ring-violet-500"
+                                />
+                                <span className="text-white text-sm">{platform.label}</span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
                         <div className="flex gap-2">
                           <Button 
@@ -349,7 +396,7 @@ const Hero1 = () => {
                           </Button>
                           <Button 
                             onClick={handlePlatformPublish}
-                            disabled={!selectedPlatform}
+                            disabled={selectedPlatforms.length === 0}
                             className="flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-50"
                           >
                             Publish
