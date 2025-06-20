@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -175,6 +174,7 @@ const Hero1 = () => {
 
   const handleDeleteVideo = () => {
     setShowVideoControls(false);
+    setShowPublishOptions(false);
     console.log("Video deleted");
   };
 
@@ -328,53 +328,47 @@ const Hero1 = () => {
                 </div>
               )}
 
-              {/* Video Controls */}
+              {/* Video Control Buttons - appear after generation without forcing interaction */}
               {showVideoControls && !isGenerating && (
                 <div className="flex justify-center">
-                  <div className="bg-[#1c1528] rounded-lg p-4 border border-[#3d2e59]">
-                    <div className="text-center mb-4">
-                      <div className="w-48 h-32 bg-[#0c0414] rounded-lg border border-[#3d2e59] flex items-center justify-center mb-4">
-                        <span className="text-gray-400 text-sm">Generated Video Preview</span>
-                      </div>
+                  {!showPublishOptions ? (
+                    <div className="flex gap-3">
+                      <Button 
+                        onClick={handleDeleteVideo}
+                        variant="destructive"
+                        className="flex items-center gap-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete Video
+                      </Button>
+                      <Button 
+                        onClick={handleFineTune}
+                        variant="outline"
+                        className="flex items-center gap-2 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
+                      >
+                        <Edit3 className="w-4 h-4" />
+                        Fine-tune Video
+                      </Button>
+                      <Button 
+                        onClick={handlePublish}
+                        className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700"
+                      >
+                        <Share2 className="w-4 h-4" />
+                        Publish
+                      </Button>
                     </div>
-                    
-                    {!showPublishOptions ? (
-                      <div className="flex flex-col gap-2 w-48">
-                        <Button 
-                          onClick={handleDeleteVideo}
-                          variant="destructive"
-                          className="w-full flex items-center gap-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                          Delete Video
-                        </Button>
-                        <Button 
-                          onClick={handleFineTune}
-                          variant="outline"
-                          className="w-full flex items-center gap-2 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
-                        >
-                          <Edit3 className="w-4 h-4" />
-                          Fine-tune Video
-                        </Button>
-                        <Button 
-                          onClick={handlePublish}
-                          className="w-full flex items-center gap-2 bg-violet-600 hover:bg-violet-700"
-                        >
-                          <Share2 className="w-4 h-4" />
-                          Publish
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="space-y-4 w-48">
+                  ) : (
+                    <div className="bg-[#1c1528] rounded-lg p-4 border border-[#3d2e59]">
+                      <div className="space-y-4 w-64">
                         <div className="text-center">
-                          <h3 className="text-white font-medium mb-2">Select Platforms</h3>
-                          <div className="space-y-2">
+                          <h3 className="text-white font-medium mb-3">Select Platforms</h3>
+                          <div className="space-y-3">
                             {[
                               { id: 'tiktok', label: 'TikTok' },
                               { id: 'instagram', label: 'Instagram Reels' },
                               { id: 'youtube', label: 'YouTube Shorts' }
                             ].map(platform => (
-                              <label key={platform.id} className="flex items-center gap-2 cursor-pointer">
+                              <label key={platform.id} className="flex items-center gap-3 cursor-pointer">
                                 <input
                                   type="checkbox"
                                   checked={selectedPlatforms.includes(platform.id)}
@@ -403,8 +397,8 @@ const Hero1 = () => {
                           </Button>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
