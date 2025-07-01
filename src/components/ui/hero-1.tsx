@@ -287,19 +287,28 @@ const Hero1 = () => {
                           <ThumbsDown className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
                         <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <Volume className="w-3 h-3 text-gray-400 hover:text-white" />
-                        </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
                           <Download className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <Edit className="w-3 h-3 text-gray-400 hover:text-white" />
+                        <button 
+                          onClick={handleDeleteVideo}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
+                          <Trash2 className="w-3 h-3 text-red-400 hover:text-red-300" />
+                        </button>
+                        <button 
+                          onClick={handleFineTune}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
+                          <Edit3 className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button 
+                          onClick={handlePublish}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
+                          <Share2 className="w-3 h-3 text-violet-400 hover:text-violet-300" />
                         </button>
                         <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <RefreshCcw className="w-3 h-3 text-gray-400 hover:text-white" />
-                        </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <Upload className="w-3 h-3 text-gray-400 hover:text-white" />
+                          <Volume className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
                         <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
                           <Globe className="w-3 h-3 text-gray-400 hover:text-white" />
