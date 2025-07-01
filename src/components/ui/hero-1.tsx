@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2, MoreHorizontal } from "lucide-react";
+import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2, MoreHorizontal, ThumbsUp, ThumbsDown, Volume, Download, Edit, RefreshCcw, Upload, Globe } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
@@ -274,39 +274,37 @@ const Hero1 = () => {
                     message.isUser 
                       ? 'bg-violet-600 text-white' 
                       : 'bg-[#1c1528] text-gray-300'
-                  } ${!message.isUser ? 'relative group' : ''}`}>
+                  }`}>
                     {message.text}
+                    
+                    {/* Compact Toolbar for AI Messages */}
                     {!message.isUser && (
-                      <ContextMenu>
-                        <ContextMenuTrigger asChild>
-                          <button className="absolute -right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-[#2a1f3d]">
-                            <MoreHorizontal className="w-4 h-4 text-gray-400" />
-                          </button>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent className="bg-[#1c1528] border-[#3d2e59] text-white">
-                          <ContextMenuItem 
-                            onClick={handleDeleteVideo}
-                            className="flex items-center gap-2 hover:bg-[#2a1f3d] text-red-400"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete Video
-                          </ContextMenuItem>
-                          <ContextMenuItem 
-                            onClick={handleFineTune}
-                            className="flex items-center gap-2 hover:bg-[#2a1f3d]"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                            Fine-tune Video
-                          </ContextMenuItem>
-                          <ContextMenuItem 
-                            onClick={handlePublish}
-                            className="flex items-center gap-2 hover:bg-[#2a1f3d]"
-                          >
-                            <Share2 className="w-4 h-4" />
-                            Publish
-                          </ContextMenuItem>
-                        </ContextMenuContent>
-                      </ContextMenu>
+                      <div className="flex items-center gap-1 mt-2 pt-2 border-t border-[#2a1f3d]">
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <ThumbsUp className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <ThumbsDown className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <Volume className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <Download className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <Edit className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <RefreshCcw className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <Upload className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                          <Globe className="w-3 h-3 text-gray-400 hover:text-white" />
+                        </button>
+                      </div>
                     )}
                   </div>
                 </div>
