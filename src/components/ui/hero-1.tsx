@@ -1,7 +1,8 @@
+
 "use client";
 
 import * as React from "react";
-import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2, MoreHorizontal, ThumbsUp, ThumbsDown, Volume, Download, Edit, RefreshCcw, Upload, Globe } from "lucide-react";
+import { Paperclip, Sparkles, Zap, Send, ChevronDown, ChevronUp, Trash2, Edit3, Share2, MoreHorizontal, ThumbsUp, ThumbsDown, Volume, VolumeX, Download, Edit, RefreshCcw, Upload, Globe } from "lucide-react";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { useNavigate } from "react-router-dom";
 import { HoverButton } from "@/components/ui/hover-button";
@@ -43,6 +44,11 @@ const Hero1 = () => {
   const [showVideoControls, setShowVideoControls] = React.useState(false);
   const [showPublishOptions, setShowPublishOptions] = React.useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = React.useState<string[]>([]);
+  
+  // New states for toolbar functionality
+  const [likedMessages, setLikedMessages] = React.useState<Set<string>>(new Set());
+  const [dislikedMessages, setDislikedMessages] = React.useState<Set<string>>(new Set());
+  const [isMuted, setIsMuted] = React.useState(false);
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
@@ -172,6 +178,59 @@ const Hero1 = () => {
     setInputValue("");
   };
 
+  // New toolbar button handlers
+  const handleLike = (messageId: string) => {
+    setLikedMessages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(messageId)) {
+        newSet.delete(messageId);
+      } else {
+        newSet.add(messageId);
+        // Remove from disliked if it was disliked
+        setDislikedMessages(prevDisliked => {
+          const newDislikedSet = new Set(prevDisliked);
+          newDislikedSet.delete(messageId);
+          return newDislikedSet;
+        });
+      }
+      return newSet;
+    });
+  };
+
+  const handleDislike = (messageId: string) => {
+    setDislikedMessages(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(messageId)) {
+        newSet.delete(messageId);
+      } else {
+        newSet.add(messageId);
+        // Remove from liked if it was liked
+        setLikedMessages(prevLiked => {
+          const newLikedSet = new Set(prevLiked);
+          newLikedSet.delete(messageId);
+          return newLikedSet;
+        });
+      }
+      return newSet;
+    });
+  };
+
+  const handleDownloadVideo = () => {
+    // Create a mock download
+    const link = document.createElement('a');
+    link.href = 'data:text/plain;charset=utf-8,Generated Video Content';
+    link.download = 'generated-video.mp4';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    console.log("Video downloaded");
+  };
+
+  const handleToggleMute = () => {
+    setIsMuted(prev => !prev);
+    console.log(`Video ${!isMuted ? 'muted' : 'unmuted'}`);
+  };
+
   const handleDeleteVideo = () => {
     setShowVideoControls(false);
     setShowPublishOptions(false);
@@ -280,13 +339,30 @@ const Hero1 = () => {
                     {/* Compact Toolbar for AI Messages */}
                     {!message.isUser && (
                       <div className="flex items-center gap-1 mt-2 pt-2 border-t border-[#2a1f3d]">
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <ThumbsUp className="w-3 h-3 text-gray-400 hover:text-white" />
+                        <button 
+                          onClick={() => handleLike(message.id)}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
+                          <ThumbsUp className={`w-3 h-3 transition-colors ${
+                            likedMessages.has(message.id) 
+                              ? 'text-green-400 fill-green-400' 
+                              : 'text-gray-400 hover:text-white'
+                          }`} />
                         </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <ThumbsDown className="w-3 h-3 text-gray-400 hover:text-white" />
+                        <button 
+                          onClick={() => handleDislike(message.id)}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
+                          <ThumbsDown className={`w-3 h-3 transition-colors ${
+                            dislikedMessages.has(message.id) 
+                              ? 'text-red-400 fill-red-400' 
+                              : 'text-gray-400 hover:text-white'
+                          }`} />
                         </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
+                        <button 
+                          onClick={handleDownloadVideo}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
+                        >
                           <Download className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
                         <button 
@@ -307,11 +383,15 @@ const Hero1 = () => {
                         >
                           <Share2 className="w-3 h-3 text-violet-400 hover:text-violet-300" />
                         </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <Volume className="w-3 h-3 text-gray-400 hover:text-white" />
-                        </button>
-                        <button className="p-1 rounded hover:bg-[#2a1f3d] transition-colors">
-                          <Globe className="w-3 h-3 text-gray-400 hover:text-white" />
+                        <button 
+                          onClick={handleToggleMute}
+                          className="p-1 rounded hover:bg-[#2a1f3d] transition-all duration-200"
+                        >
+                          {isMuted ? (
+                            <VolumeX className="w-3 h-3 text-red-400 hover:text-red-300 animate-pulse" />
+                          ) : (
+                            <Volume className="w-3 h-3 text-gray-400 hover:text-white" />
+                          )}
                         </button>
                       </div>
                     )}
