@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -49,6 +48,7 @@ const Hero1 = () => {
   const [likedMessages, setLikedMessages] = React.useState<Set<string>>(new Set());
   const [dislikedMessages, setDislikedMessages] = React.useState<Set<string>>(new Set());
   const [isMuted, setIsMuted] = React.useState(false);
+  const [deletedMessages, setDeletedMessages] = React.useState<Set<string>>(new Set());
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
@@ -178,7 +178,7 @@ const Hero1 = () => {
     setInputValue("");
   };
 
-  // New toolbar button handlers
+  // Updated toolbar button handlers
   const handleLike = (messageId: string) => {
     setLikedMessages(prev => {
       const newSet = new Set(prev);
@@ -224,6 +224,21 @@ const Hero1 = () => {
     link.click();
     document.body.removeChild(link);
     console.log("Video downloaded");
+  };
+
+  const handleDeleteVideoFromToolbar = (messageId: string) => {
+    setDeletedMessages(prev => new Set([...prev, messageId]));
+    console.log(`Video for message ${messageId} deleted`);
+  };
+
+  const handleFineTuneFromToolbar = (messageId: string) => {
+    console.log(`Fine-tuning video for message ${messageId}`);
+    // Add visual feedback or additional logic here if needed
+  };
+
+  const handlePublishFromToolbar = (messageId: string) => {
+    console.log(`Publishing video for message ${messageId}`);
+    setShowPublishOptions(true);
   };
 
   const handleToggleMute = () => {
@@ -332,12 +347,18 @@ const Hero1 = () => {
                   <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                     message.isUser 
                       ? 'bg-violet-600 text-white' 
-                      : 'bg-[#1c1528] text-gray-300'
+                      : deletedMessages.has(message.id)
+                        ? 'bg-red-900/20 text-red-400 opacity-50'
+                        : 'bg-[#1c1528] text-gray-300'
                   }`}>
-                    {message.text}
+                    {deletedMessages.has(message.id) ? (
+                      <span className="italic">Video deleted</span>
+                    ) : (
+                      message.text
+                    )}
                     
                     {/* Compact Toolbar for AI Messages */}
-                    {!message.isUser && (
+                    {!message.isUser && !deletedMessages.has(message.id) && (
                       <div className="flex items-center gap-1 mt-2 pt-2 border-t border-[#2a1f3d]">
                         <button 
                           onClick={() => handleLike(message.id)}
@@ -366,19 +387,19 @@ const Hero1 = () => {
                           <Download className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
                         <button 
-                          onClick={handleDeleteVideo}
+                          onClick={() => handleDeleteVideoFromToolbar(message.id)}
                           className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
                         >
                           <Trash2 className="w-3 h-3 text-red-400 hover:text-red-300" />
                         </button>
                         <button 
-                          onClick={handleFineTune}
+                          onClick={() => handleFineTuneFromToolbar(message.id)}
                           className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
                         >
                           <Edit3 className="w-3 h-3 text-gray-400 hover:text-white" />
                         </button>
                         <button 
-                          onClick={handlePublish}
+                          onClick={() => handlePublishFromToolbar(message.id)}
                           className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
                         >
                           <Share2 className="w-3 h-3 text-violet-400 hover:text-violet-300" />
