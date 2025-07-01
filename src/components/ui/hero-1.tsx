@@ -40,7 +40,6 @@ const Hero1 = () => {
   const [credits, setCredits] = React.useState(45);
   const [showClipSection, setShowClipSection] = React.useState(false);
   const [videoLink, setVideoLink] = React.useState("");
-  const [showVideoControls, setShowVideoControls] = React.useState(false);
   const [showPublishOptions, setShowPublishOptions] = React.useState(false);
   const [selectedPlatforms, setSelectedPlatforms] = React.useState<string[]>([]);
   
@@ -49,6 +48,7 @@ const Hero1 = () => {
   const [dislikedMessages, setDislikedMessages] = React.useState<Set<string>>(new Set());
   const [isMuted, setIsMuted] = React.useState(false);
   const [deletedMessages, setDeletedMessages] = React.useState<Set<string>>(new Set());
+  const [fineTuningMessage, setFineTuningMessage] = React.useState<string | null>(null);
   
   // Get messages from the active project
   const messages = activeProject?.messages || [];
@@ -127,8 +127,6 @@ const Hero1 = () => {
       updateProjectMessages(activeProject.id, finalMessages);
       setIsGenerating(false);
       setCredits(prev => Math.max(0, prev - 1));
-      // Show video controls after generation
-      setShowVideoControls(true);
     }, 2000);
     
     setVideoLink("");
@@ -170,8 +168,6 @@ const Hero1 = () => {
         setIsGenerating(false);
         // Decrease credits after successful response
         setCredits(prev => Math.max(0, prev - 1));
-        // Show video controls after generation
-        setShowVideoControls(true);
       }, 2000);
     }, 500);
     
@@ -233,7 +229,7 @@ const Hero1 = () => {
 
   const handleFineTuneFromToolbar = (messageId: string) => {
     console.log(`Fine-tuning video for message ${messageId}`);
-    // Add visual feedback or additional logic here if needed
+    setFineTuningMessage(messageId);
   };
 
   const handlePublishFromToolbar = (messageId: string) => {
@@ -416,6 +412,41 @@ const Hero1 = () => {
                         </button>
                       </div>
                     )}
+
+                    {/* Fine-tuning Video Preview */}
+                    {fineTuningMessage === message.id && !message.isUser && !deletedMessages.has(message.id) && (
+                      <div className="mt-3 pt-3 border-t border-[#2a1f3d]">
+                        <div className="bg-[#0c0414] rounded-lg p-3 border border-[#3d2e59]">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Edit3 className="w-4 h-4 text-violet-400" />
+                            <span className="text-sm text-violet-400 font-medium">Fine-tuning Video</span>
+                          </div>
+                          <div className="bg-gradient-to-r from-violet-900/20 to-blue-900/20 rounded-lg h-16 flex items-center justify-center mb-3">
+                            <div className="text-xs text-gray-400">Video Preview</div>
+                          </div>
+                          <div className="flex gap-2">
+                            <Button 
+                              onClick={() => setFineTuningMessage(null)}
+                              variant="outline"
+                              size="sm"
+                              className="flex-1 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
+                            >
+                              Cancel
+                            </Button>
+                            <Button 
+                              onClick={() => {
+                                console.log("Applying fine-tune changes");
+                                setFineTuningMessage(null);
+                              }}
+                              size="sm"
+                              className="flex-1 bg-violet-600 hover:bg-violet-700"
+                            >
+                              Apply
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -436,77 +467,49 @@ const Hero1 = () => {
                 </div>
               )}
 
-              {/* Video Control Buttons - appear after generation without forcing interaction */}
-              {showVideoControls && !isGenerating && (
+              {/* Publish Options Modal */}
+              {showPublishOptions && (
                 <div className="flex justify-center">
-                  {!showPublishOptions ? (
-                    <div className="flex gap-3">
-                      <Button 
-                        onClick={handleDeleteVideo}
-                        variant="destructive"
-                        className="flex items-center gap-2"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Delete Video
-                      </Button>
-                      <Button 
-                        onClick={handleFineTune}
-                        variant="outline"
-                        className="flex items-center gap-2 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
-                      >
-                        <Edit3 className="w-4 h-4" />
-                        Fine-tune Video
-                      </Button>
-                      <Button 
-                        onClick={handlePublish}
-                        className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700"
-                      >
-                        <Share2 className="w-4 h-4" />
-                        Publish
-                      </Button>
-                    </div>
-                  ) : (
-                    <div className="bg-[#1c1528] rounded-lg p-4 border border-[#3d2e59]">
-                      <div className="space-y-4 w-64">
-                        <div className="text-center">
-                          <h3 className="text-white font-medium mb-3">Select Platforms</h3>
-                          <div className="space-y-3">
-                            {[
-                              { id: 'tiktok', label: 'TikTok' },
-                              { id: 'instagram', label: 'Instagram Reels' },
-                              { id: 'youtube', label: 'YouTube Shorts' }
-                            ].map(platform => (
-                              <label key={platform.id} className="flex items-center gap-3 cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={selectedPlatforms.includes(platform.id)}
-                                  onChange={() => handlePlatformToggle(platform.id)}
-                                  className="w-4 h-4 text-violet-600 bg-[#0c0414] border-[#3d2e59] rounded focus:ring-violet-500"
-                                />
-                                <span className="text-white text-sm">{platform.label}</span>
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button 
-                            onClick={() => setShowPublishOptions(false)}
-                            variant="outline"
-                            className="flex-1 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
-                          >
-                            Back
-                          </Button>
-                          <Button 
-                            onClick={handlePlatformPublish}
-                            disabled={selectedPlatforms.length === 0}
-                            className="flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-50"
-                          >
-                            Publish
-                          </Button>
+                  <div className="bg-[#1c1528] rounded-lg p-4 border border-[#3d2e59]">
+                    <div className="space-y-4 w-64">
+                      <div className="text-center">
+                        <h3 className="text-white font-medium mb-3">Select Platforms</h3>
+                        <div className="space-y-3">
+                          {[
+                            { id: 'tiktok', label: 'TikTok' },
+                            { id: 'instagram', label: 'Instagram Reels' },
+                            { id: 'youtube', label: 'YouTube Shorts' }
+                          ].map(platform => (
+                            <label key={platform.id} className="flex items-center gap-3 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={selectedPlatforms.includes(platform.id)}
+                                onChange={() => handlePlatformToggle(platform.id)}
+                                className="w-4 h-4 text-violet-600 bg-[#0c0414] border-[#3d2e59] rounded focus:ring-violet-500"
+                              />
+                              <span className="text-white text-sm">{platform.label}</span>
+                            </label>
+                          ))}
                         </div>
                       </div>
+                      <div className="flex gap-2">
+                        <Button 
+                          onClick={() => setShowPublishOptions(false)}
+                          variant="outline"
+                          className="flex-1 bg-[#0c0414] border-[#3d2e59] text-white hover:bg-[#2a1f3d]"
+                        >
+                          Back
+                        </Button>
+                        <Button 
+                          onClick={handlePlatformPublish}
+                          disabled={selectedPlatforms.length === 0}
+                          className="flex-1 bg-violet-600 hover:bg-violet-700 disabled:opacity-50"
+                        >
+                          Publish
+                        </Button>
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </div>
