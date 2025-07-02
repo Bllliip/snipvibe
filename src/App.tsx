@@ -23,6 +23,7 @@ const App = () => (
           <Route path="/demo" element={<Demo.DemoOne />} />
           <Route path="/demo/button" element={<Demo.HoverButtonDemo />} />
           <Route path="/demo/profile" element={<Demo.ProfileDemo />} />
+          <Route path="/demo/account" element={<Demo.AccountDemo />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/pricing" element={<Pricing />} />
