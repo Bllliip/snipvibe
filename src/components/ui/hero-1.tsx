@@ -242,19 +242,6 @@ const Hero1 = () => {
     console.log(`Video ${!isMuted ? 'muted' : 'unmuted'}`);
   };
 
-  const handleDeleteVideo = () => {
-    setShowVideoControls(false);
-    setShowPublishOptions(false);
-    console.log("Video deleted");
-  };
-
-  const handleFineTune = () => {
-    console.log("Fine-tuning video");
-  };
-
-  const handlePublish = () => {
-    setShowPublishOptions(true);
-  };
 
   const handlePlatformToggle = (platform: string) => {
     setSelectedPlatforms(prev => 
@@ -269,7 +256,6 @@ const Hero1 = () => {
     
     console.log(`Publishing to ${selectedPlatforms.join(', ')}`);
     setShowPublishOptions(false);
-    setShowVideoControls(false);
     setSelectedPlatforms([]);
   };
 
@@ -393,12 +379,6 @@ const Hero1 = () => {
                           className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
                         >
                           <Edit3 className="w-3 h-3 text-gray-400 hover:text-white" />
-                        </button>
-                        <button 
-                          onClick={() => handlePublishFromToolbar(message.id)}
-                          className="p-1 rounded hover:bg-[#2a1f3d] transition-colors"
-                        >
-                          <Share2 className="w-3 h-3 text-violet-400 hover:text-violet-300" />
                         </button>
                         <button 
                           onClick={handleToggleMute}
