@@ -31,7 +31,7 @@ const Hero1 = () => {
   }
 
   const { projects, activeProjectId, updateProjectMessages } = chatContext;
-  const activeProject = projects.find(p => p.id === activeProjectId);
+  const activeProject = projects.find(p => p.id === activeProjectId) || null;
   
   const [inputValue, setInputValue] = React.useState("");
   const [isGenerating, setIsGenerating] = React.useState(false);
@@ -50,7 +50,7 @@ const Hero1 = () => {
   const [deletedMessages, setDeletedMessages] = React.useState<Set<string>>(new Set());
   const [fineTuningMessage, setFineTuningMessage] = React.useState<string | null>(null);
   
-  // Get messages from the active project
+  // Get messages from the active project with null safety
   const messages = activeProject?.messages || [];
   const showChat = messages.length > 0;
   const showTypingAnimation = !showChat;
@@ -102,7 +102,7 @@ const Hero1 = () => {
   };
 
   const handleClipVideo = () => {
-    if (!videoLink.trim()) return;
+    if (!videoLink.trim() || !activeProject) return;
     
     // Add user message about clipping
     const userMessage = {
