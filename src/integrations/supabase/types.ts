@@ -9,7 +9,113 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      user_credits: {
+        Row: {
+          id: string
+          image_credits: number | null
+          updated_at: string
+          user_id: string | null
+          video_credits: number | null
+          voice_credits: number | null
+        }
+        Insert: {
+          id?: string
+          image_credits?: number | null
+          updated_at?: string
+          user_id?: string | null
+          video_credits?: number | null
+          voice_credits?: number | null
+        }
+        Update: {
+          id?: string
+          image_credits?: number | null
+          updated_at?: string
+          user_id?: string | null
+          video_credits?: number | null
+          voice_credits?: number | null
+        }
+        Relationships: []
+      }
+      video_assets: {
+        Row: {
+          asset_type: string
+          asset_url: string
+          created_at: string
+          id: string
+          metadata: Json | null
+          project_id: string | null
+          source_api: string
+        }
+        Insert: {
+          asset_type: string
+          asset_url: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          project_id?: string | null
+          source_api: string
+        }
+        Update: {
+          asset_type?: string
+          asset_url?: string
+          created_at?: string
+          id?: string
+          metadata?: Json | null
+          project_id?: string | null
+          source_api?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_assets_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "video_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_projects: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration: number | null
+          id: string
+          prompt: string
+          status: string | null
+          thumbnail_url: string | null
+          title: string
+          updated_at: string
+          user_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          id?: string
+          prompt: string
+          status?: string | null
+          thumbnail_url?: string | null
+          title: string
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration?: number | null
+          id?: string
+          prompt?: string
+          status?: string | null
+          thumbnail_url?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
